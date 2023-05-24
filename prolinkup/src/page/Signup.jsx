@@ -48,11 +48,12 @@ function Signup() {
         Already have an account?
       </Link>
       <div>
-        <button className="btn btn-block btn-primary">SignUp</button>
+        <button className="btn btn-block">SignUp</button>
       </div>
+      <p className='text-center'>Or sign up with :</p>
       <div className='flex space-x-1'>
-        <button className="btn w-1/2">SignUp</button>
-        <button className="btn w-1/2">SignUp</button>
+        <button className="btn w-1/2">Facebook</button>
+        <button className="btn w-1/2">Google</button>
       </div>
     </form>
   </div>
