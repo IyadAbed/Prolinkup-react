@@ -1,7 +1,18 @@
-import { Link } from 'react-router-dom'
+import { useState } from 'react'
+import SignupC from '../component/SignupC'
+import SignupP from '../component/SignupP'
 import LogoWT from '../image/LogoWT.png'
+import { Link } from 'react-router-dom'
+
 
 function Signup() {
+  const [SignUp, setSignUp] = useState(<SignupC />)
+  const SignupPro = ()=>{
+    setSignUp(<SignupP />)
+  }
+  const SignupCustomer = ()=>{
+    setSignUp(<SignupC />)
+  }
   return (
     <>
     <div className="relative flex flex-col items-center justify-center h-screen overflow-hidden">
@@ -10,52 +21,12 @@ function Signup() {
     <h1 className="text-3xl font-semibold text-center text-gray-700">
       Singup
     </h1>
-    <form className="space-y-4">
-      <div>
-        <label className="label">
-          <span className="text-base label-text">UserName</span>
-        </label>
-        <input
-          type="text"
-          placeholder="UserName"
-          className="w-full input input-bordered"
-        />
+      <div className='flex justify-between items-center'>
+      <button className='btn' onClick={SignupPro}>SignUp As a pro</button>
+      <p>OR:</p>
+      <button className='btn' onClick={SignupCustomer}>SignUp As Dreamer</button>
       </div>
-      <div>
-        <label className="label">
-          <span className="text-base label-text">Email</span>
-        </label>
-        <input
-          type="text"
-          placeholder="Email Address"
-          className="w-full input input-bordered"
-        />
-      </div>
-      <div>
-        <label className="label">
-          <span className="text-base label-text">Password</span>
-        </label>
-        <input
-          type="password"
-          placeholder="Enter Password"
-          className="w-full input input-bordered"
-        />
-      </div>
-      <Link to='/SignIn'
-        href="#"
-        className="text-xs text-gray-600 hover:underline hover:text-blue-600"
-      >
-        Already have an account?
-      </Link>
-      <div>
-        <button className="btn btn-block">SignUp</button>
-      </div>
-      <p className='text-center'>Or sign up with :</p>
-      <div className='flex space-x-1'>
-        <button className="btn w-1/2">Facebook</button>
-        <button className="btn w-1/2">Google</button>
-      </div>
-    </form>
+      {SignUp}
   </div>
 </div>
     </>

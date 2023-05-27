@@ -60,7 +60,7 @@ export default function Nav() {
           </ul>
         </div>
         <div className="navbar-end">
-          <Link to='/Signup' className="btn btn-primary">Get started</Link>
+          <Link to='/Signup' className="btn">Get started</Link>
         </div>
       </div>
     </>
