@@ -1,1 +1,4 @@
-# Prolinkup-react
+# PROLINKUP 
+### Description about my project
+##### Our platform brings together specialized industrial professionals and clients in need of their services. With our one-stop-shop solution, clients can easily create and manage projects, while specialists can browse and submit proposals for projects that match their skills and expertise. Our focus on collaboration and teamwork ensures easy communication and file sharing, while our payment and invoicing capabilities streamline the project workflow. Join our platform today to find specialized professionals and expand your network of potential clients.
+* figma [link](https://www.figma.com/file/Vzi2WROKjb21WyrMkXlsuH/Masterpiece?t=ilkjFfxwBJDeQSN8-6)
