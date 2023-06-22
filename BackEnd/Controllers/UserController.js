@@ -25,7 +25,7 @@ module.exports = {
         user_token: token,
       });
 
-      const users = await User.findOne({ email: email });
+      const users = await User.findOne({ email });
       if (users) {
         return res.json({ error: "email has already exist" });
       }
@@ -40,7 +40,7 @@ module.exports = {
   login: async (req, res) => {
     try {
       const { email, password } = req.body;
-      const userInfo = await User.findOne({ email: email });
+      const userInfo = await User.findOne({ email });
       if (!userInfo) {
         return res.json({ error: "email not found" });
       }
@@ -82,4 +82,16 @@ module.exports = {
       console.error('Error editing user:', error);
     }
   },
+  getUser:async(req, res) => {
+    try {
+      if (!req?.user) return res.status(400).json({ "message": 'User is UnAuthorized' });
+      const user = await User.findOne({ email: req.user.email }).exec();
+      if (!user) {
+          return res.status(204).json({ 'message': `User Email ${req.user.email} not found` });
+      }
+      res.json(user);
+    } catch (error) {
+      console.error("failed in login", error);
+    }
+  }
 };
