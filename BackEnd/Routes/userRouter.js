@@ -3,12 +3,14 @@ const router = express.Router();
 
 const userController = require("../Controllers/UserController");
 const verifyUser = require("../Middleware/verify");
+const upload = require("../Middleware/handleimage");
+
 
 router.get("/users", userController.allUsers);
-router.get("/userss", verifyUser, userController.getUser);
+router.get("/getUser", verifyUser, userController.getUser);
 router.post("/addUser", userController.addUser);
 router.post("/log", userController.login);
-router.put("/updateUser", userController.updateUser);
-
+router.put("/updateUser/:id", upload.single("image"), userController.updateUser);
+router.get("/imagePath/:id", userController.getimage);
 
 module.exports = router;

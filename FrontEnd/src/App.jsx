@@ -11,6 +11,7 @@ import Signin from "./page/Signin";
 import DreamCreation from "./component/DreamCreation";
 import Matching from "./component/Matching";
 import Dashboard from "./page/Dashboard";
+import UserProfile from "./page/UserProfile";
 
 
 function App() {
@@ -32,6 +33,7 @@ function App() {
           <Route path="Signup" element={<Signup/>} />
           <Route path="Signin" element={<Signin/>} />
           <Route path="Dashboard" element={<Dashboard/>} />
+          <Route path="profile" element= {<UserProfile />}/>
         </Routes>
         <Footer />
       </BrowserRouter>

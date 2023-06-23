@@ -1,7 +1,16 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import Logo from "../image/Logo.png";
+import { AuthContext } from "../Context/AuthContext";
+import ProfileDrop from "./ProfileDrop";
 export default function Nav() {
+  const { auth, setAuth } = useContext(AuthContext);
+  const handleLogOut = () => {
+    navigate("/");
+    setAuth(false);
+    localStorage.clear();
+  };
+  console.log(auth);
   return (
     <>
       <div className="navbar bg-base-100 sticky top-0 z-50">
@@ -28,15 +37,15 @@ export default function Nav() {
               className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
             >
               <li>
-                <Link to='/Home'>Home</Link>
+                <Link to="/Home">Home</Link>
               </li>
               <li tabIndex={0}>
-                <Link to='/About' className="justify-between">
+                <Link to="/About" className="justify-between">
                   About
                 </Link>
               </li>
               <li>
-                <Link to='/Contact'>Contact</Link>
+                <Link to="/Contact">Contact</Link>
               </li>
             </ul>
           </div>
@@ -50,9 +59,7 @@ export default function Nav() {
               <Link to="/Home">Home</Link>
             </li>
             <li tabIndex={0}>
-              <Link to="/About">
-                About
-              </Link>
+              <Link to="/About">About</Link>
             </li>
             <li>
               <Link to="/Contact">Contact</Link>
@@ -60,7 +67,14 @@ export default function Nav() {
           </ul>
         </div>
         <div className="navbar-end">
-          <Link to='/Signup' className="btn">Get started</Link>
+          {auth === true ? (
+            <ProfileDrop />
+          ):(
+            <Link to="/Signup" className="btn">
+            Get started
+          </Link>
+          )
+          }
         </div>
       </div>
     </>

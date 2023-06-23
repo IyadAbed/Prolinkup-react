@@ -19,9 +19,8 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  user_token: {
+  imageUrl: {
     type: String,
-    required: true
   }
   // ... other fields as per your requirements
 },{ timestamp: true });
