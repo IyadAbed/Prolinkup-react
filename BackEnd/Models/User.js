@@ -15,13 +15,50 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  user_type: {
-    type: String,
-    required: true,
-  },
   imageUrl: {
     type: String,
-  }
+  },
+  major: {
+    type: [String],
+    required: true,
+  },
+  skills: {
+    type: [String],
+    required: true,
+  },
+  experience: {
+    type: Number,
+    required: true,
+  },
+  availability: {
+    type: Boolean,
+    // required: true,
+  },
+  projects: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Project',
+  }],
+  projectTodo: [
+    {
+        project:{
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'Project'
+        },
+        status: {
+          type: String,
+          enum: ['pending', 'cancelled', 'accepted'],
+          default: 'pending',
+        },
+    },
+  ],
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+  updatedAt: {
+    type: Date,
+    default: Date.now,
+  },
   // ... other fields as per your requirements
 },{ timestamp: true });
 

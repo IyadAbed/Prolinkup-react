@@ -13,17 +13,12 @@ import { UserContext } from "../Context/UserContext";
 
 export default function Profilehome() {
   const { user, userRefresh } = useContext(UserContext);
-  const id = user?._id
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(!open);
   const [file, setFile] = useState(null);
   const [newUser, setNewUser] = useState({
     name: "",
   });
-  // const [userName, serUserName] = useState('') 
-  // const [userEmail, serUserEmail] = useState('') 
-  // console.log(userName);
-  const [refresh,setRefresh] = useState(true)
   const handleChange = (e) => {
     const { name, value } = e.target;
     setNewUser((prev) => ({
@@ -67,7 +62,7 @@ export default function Profilehome() {
               {user.imageUrl ? (
               <img
                 className="w-48 h-48 rounded-full mx-auto text-gray-500"
-                src={`http://localhost:5000/${user.imageUrl}`}
+                src={`${user.imageUrl}`}
                 alt="Profile Image"
               />
               ):(
@@ -89,14 +84,8 @@ export default function Profilehome() {
                     <tbody>
                       <tr>
                         <td className="px-2 py-2">
-                          <span style={{ fontWeight: "bold" }}>Address :</span>{" "}
-                          Zarqa-1-F20
-                        </td>
-                      </tr>
-                      <tr>
-                        <td className="px-2 py-2">
-                          <span style={{ fontWeight: "bold" }}>Phone :</span>{" "}
-                          +977 9955221114
+                          <span style={{ fontWeight: "bold" }}>Experience :</span>{" "}
+                          {user.experience} Years
                         </td>
                       </tr>
                       <tr>
@@ -114,23 +103,21 @@ export default function Profilehome() {
                       <tr>
                         <td className="px-2 py-2">
                           <span style={{ fontWeight: "bold" }}>
-                            First Name :
+                            Major :
                           </span>{" "}
-                          Mahmoud{" "}
+                          {user.major}
                         </td>
                       </tr>
                       <tr>
                         <td className="px-2 py-2">
-                          <span style={{ fontWeight: "bold" }}>
-                            Last Name :
-                          </span>{" "}
-                          Hassan{" "}
-                        </td>
-                      </tr>
-                      <tr>
-                        <td className="px-2 py-2">
-                          <span style={{ fontWeight: "bold" }}>City :</span>{" "}
-                          Zarqa
+                          <span style={{ fontWeight: "bold" }}>Skills :</span>{" "}
+                          <ul>
+                          {user.skills?.map((skills)=>{
+                            return (
+                                  <li>{skills}</li>
+                                  )
+                                })}
+                          </ul>
                         </td>
                       </tr>
                     </tbody>
@@ -182,59 +169,23 @@ export default function Profilehome() {
                               <div>
                                 <label
                                   className="text-black dark:text-gray-200"
-                                  htmlFor="emailAddress"
-                                >
-                                  Email Address
-                                </label>
-                                <input
-                                  id="emailAddress"
-                                  type="email"
-                                  className="block w-full px-4 py-2 mt-2 text-black bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
-                                />
-                              </div>
-                              <div>
-                                <label
-                                  className="text-black dark:text-gray-200"
                                   htmlFor="password"
                                 >
-                                  Password
+                                  Add Skill's
                                 </label>
                                 <input
-                                  value="*********"
-                                  id="password"
-                                  type="password"
+                                type="text"
                                   className="block w-full px-4 py-2 mt-2 text-black bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
                                 />
                               </div>
 
-                              <div>
-                                <label
-                                  className="text-black dark:text-gray-200"
-                                  htmlFor="citySelect"
-                                >
-                                  Select
-                                </label>
-                                <select
-                                  id="citySelect"
-                                  className="block w-full px-4 py-2 mt-2 text-black bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
-                                  // value={location}
-                                >
-                                  <option value="Amman">Zarqa</option>
-                                  <option value="Zarqa">Amman</option>
-                                  <option value="Irbid">Irbid</option>
-                                  <option value="Aqaba">Aqaba</option>
-                                  <option value="Jerash">Jerash</option>
-                                  <option value="Madaba">Madaba</option>
-                                </select>
-                              </div>
 
                               <input
                                 className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
                                 id="multiple_files"
                                 onChange={(e) => {
                                   setFile(e.target.files[0]);
-                                  console.log(e.target.files[0]);
-                                }}
+                                  }}
                                 type="file"
                                 multiple=""
                               />

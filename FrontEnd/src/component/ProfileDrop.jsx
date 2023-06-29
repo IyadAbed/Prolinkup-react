@@ -1,8 +1,10 @@
 import React, { useContext } from 'react'
 import { Link, Navigate, useNavigate } from 'react-router-dom'
 import { AuthContext } from '../Context/AuthContext';
+import { UserContext } from '../Context/UserContext';
 
 function ProfileDrop() {
+  const {user} = useContext(UserContext)
   const navigate = useNavigate()
   const { setAuth } = useContext(AuthContext);
   const handleLogOut = () => {
@@ -18,12 +20,12 @@ function ProfileDrop() {
       className="hs-dropdown-toggle py-1 pl-1 pr-3 inline-flex justify-center items-center gap-2 rounded-full border font-medium bg-white text-gray-700 shadow-sm align-middle hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-[#70ACC7] transition-all text-sm dark:bg-gray-800 dark:hover:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:text-white dark:focus:ring-offset-gray-800"
     >
       <img
-        className="w-8 h-auto rounded-full"
-        src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80"
+        className="w-8 h-8 rounded-full"
+        src={`${user.imageUrl}`}
         alt="Maria"
       />
       <span className="text-gray-600 font-medium truncate max-w-[7.5rem] dark:text-gray-400">
-        Maria
+        {user.name}
       </span>
       <svg
         className="hs-dropdown-open:rotate-180 w-2.5 h-2.5 text-gray-600"
@@ -62,7 +64,7 @@ function ProfileDrop() {
         className="flex items-center gap-x-3.5 py-2 px-3 rounded-md text-sm text-gray-800 hover:bg-gray-100 focus:ring-2 focus:ring-blue-500 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300"
         href="#"
       >
-        Downloads
+        Profile
       </Link>
       <a
         onClick={handleLogOut}

@@ -1,7 +1,7 @@
-import { BiEdit } from 'react-icons/bi';
+import { BiEdit } from "react-icons/bi";
 
-import  { useState , useEffect ,Fragment } from 'react';
-import axios from 'axios';
+import { useState, useEffect, Fragment, useRef, useContext } from "react";
+import axios from "axios";
 import {
   Button,
   Dialog,
@@ -9,17 +9,120 @@ import {
   DialogBody,
   DialogFooter,
 } from "@material-tailwind/react";
+import MyProject from "./MyProject";
+import { UserContext } from "../Context/UserContext";
 
 export default function Profileadd() {
+  const options = [
+    { value: "html", label: "HTML" },
+    { value: "css", label: "CSS" },
+    { value: "javascript", label: "JavaScript" },
+    { value: "react", label: "React" },
+    { value: "nodejs", label: "Node.js" },
+    { value: "expressjs", label: "Express.js" },
+    // Add more web development skills as needed
+  ];
+
+  const { user, userRefresh } = useContext(UserContext);
+
+  const [file, setFile] = useState(null);
+
+  const [newProject, setNewProject] = useState({
+    name: "",
+    description: "",
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setNewProject((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const [selectedOptions, setSelectedOptions] = useState([]);
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
+  const handleOptionChange = (option) => {
+    const selectedValues = selectedOptions.map(
+      (selectedOption) => selectedOption
+    );
+
+    if (selectedValues.includes(option.value)) {
+      setSelectedOptions(
+        selectedOptions.filter(
+          (selectedOption) => selectedOption !== option.value
+        )
+      );
+    } else {
+      setSelectedOptions([...selectedOptions, option.value]);
+    }
+  };
+
+  const toggleDropdown = (e) => {
+    e.preventDefault();
+    setIsOpen(!isOpen);
+  };
+
+  const handleClickOutside = (event) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      setIsOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  const getSelectedOptionLabels = () => {
+    return selectedOptions.map((value) => {
+      const option = options.find((option) => option.value === value);
+      return option ? option.label : "";
+    });
+  };
+  console.log(file);
+  console.log(newProject.name);
+  console.log(newProject.description);
+
+  const formData = new FormData();
+  formData.append("owner", user._id);
+  formData.append("name", newProject.name);
+  formData.append("description", newProject.description);
+  formData.append("image", file);
+  function handleSubmit(event) {
+    event.preventDefault();
+    try {
+      axios.post(`http://localhost:5000/createProject`, formData).then(() => {
+        userRefresh();
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <>
-   
+      <h1 className=" text-4xl text-center text-black">My Project's</h1>
+      <br />
+      <hr />
+      <br />
+      <MyProject />
+      <br />
+      <hr />
+      <br />
+      <h1 className=" text-4xl text-center text-black">Add Project's</h1>
+      <br />
+      <hr />
 
-    <section className="max-w-2xl p-6 mx-auto bg-white rounded-md shadow-md dark:bg-gray-800 mt-20">
-    <h1 className="text-xl font-bold text-black capitalize dark:text-white">
-          Add Field
+      <section className="max-w-2xl p-6 mx-auto bg-white rounded-md shadow-md dark:bg-gray-800 mt-20">
+        <h1 className="text-xl font-bold text-black capitalize dark:text-white">
+          Add new project
         </h1>
-        <form className="mt-4" >
+        <form className="mt-4" onSubmit={handleSubmit}>
           <div className="grid grid-cols-1 gap-6">
             <label
               className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -28,109 +131,120 @@ export default function Profileadd() {
               image
             </label>
             <input
-              className="block w-full mb-5 text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-              id="small_size"
+              required
+              onChange={(e) => {
+                setFile(e.target.files[0]);
+              }}
+              className="block w-full mb-5 text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 focus:ring-[#70ACC7]"
               type="file"
-              multiple
-
-
+              multiple=""
             />
 
             <div>
-              <label className="text-black dark:text-gray-200" htmlFor="username">
-              Field name:
+              <label
+                className="text-black dark:text-gray-200"
+                htmlFor="username"
+              >
+                Project Name:
               </label>
               <input
-                id="username"
+                name="name"
+                onChange={handleChange}
                 type="text"
-                className="block w-full px-4 py-2 mt-2 text-black bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
+                className="block w-full px-4 py-2 mt-2 text-black bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-[#70ACC7] dark:focus:border-[#70ACC7] focus:outline-none focus:ring-[#70ACC7]"
               />
             </div>
 
             <div>
-              <label className="text-black dark:text-gray-200" htmlFor="emailAddress">
-              Price booking per two hours :
-              </label>
-              <input
-                id="emailAddress"
-                type="number"
-                className="block w-full px-4 py-2 mt-2 text-black bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
-              />
-            </div>
-
-            <div>
-              <label className="text-black dark:text-gray-200" htmlFor="fieldType">
-              Field size:
+              <label
+                className="text-black dark:text-gray-200"
+                htmlFor="emailAddress"
+              >
+                Field of project
               </label>
               <select
                 id="fieldType"
-                className="block w-full px-4 py-2 mt-2 text-black bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
+                className="block w-full px-4 py-2 mt-2 text-black bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-[#70ACC7] dark:focus:border-[#70ACC7] focus:outline-none focus:ring-[#70ACC7]"
               >
-              <option value="">Select Size</option>
-                <option value="11-a-side">11-a-side</option>
-                <option value="7-a-side">7-a-side</option>
-                <option value="5-a-side">5-a-side</option>
+                <option value="">Select Size</option>
+                <option value="11-a-side">Web development</option>
+                <option value="7-a-side">Cloud</option>
+                <option value="5-a-side">AI</option>
               </select>
             </div>
-          
+
             <div>
-            <label className="text-black dark:text-gray-200" htmlFor="citySelect">
-              City:
-            </label>
-            <select
-              id="citySelect"
-              className="block w-full px-4 py-2 mt-2 text-black bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
-              
-            >
-              <option value="">Select City</option>
-              <option value="Amman">Amman</option>
-              <option value="Zarqa">Zarqa</option>
-              <option value="Irbid">Irbid</option>
-              <option value="Aqaba">Aqaba</option>
-              <option value="Jerash">Jerash</option>
-              <option value="Madaba">Madaba</option>
-            </select>
-          </div>
+              <label
+                className="text-black dark:text-gray-200"
+                htmlFor="fieldType"
+              >
+                Skill's needed:
+              </label>
+              <br />
+              <div className="relative" ref={dropdownRef}>
+                <button
+                  onClick={toggleDropdown}
+                  className="w-full py-2 pl-3 pr-10 text-left bg-white border border-gray-300 rounded-md shadow-sm cursor-pointer focus:outline-none focus:ring-1 focus:ring-blue-500"
+                >
+                  Skills: {getSelectedOptionLabels().join(", ")}
+                </button>
+                {isOpen && (
+                  <div className="absolute right-0 w-full mt-2 bg-white border border-gray-300 rounded-md shadow-lg">
+                    {options.map((option) => (
+                      <div
+                        key={option.value}
+                        onClick={() => handleOptionChange(option)}
+                        className={`px-4 py-2 cursor-pointer hover:bg-blue-500 hover:text-white ${
+                          selectedOptions.includes(option.value)
+                            ? "bg-blue-500 text-white"
+                            : "bg-white text-gray-700"
+                        }`}
+                      >
+                        {option.label}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+
             <div>
-              <label className="text-black dark:text-gray-200" htmlFor="textarea">
+              <label
+                className="text-black dark:text-gray-200"
+                htmlFor="textarea"
+              >
                 Details:
               </label>
               <textarea
                 id="textarea"
-                className="block w-full px-4 py-2 mt-2 text-black bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
+                className="block w-full px-4 py-2 mt-2 text-black bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-[#70ACC7] dark:focus:border-[#70ACC7] focus:outline-none focus:ring-[#70ACC7]"
               ></textarea>
             </div>
             <div>
-            <label className="text-black dark:text-gray-200" htmlFor="textarea">
-              Description:
-            </label>
-            <textarea
-              id="textarea"
-              className="block w-full px-4 py-2 mt-2 text-black bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
-            ></textarea>
-          </div>
+              <label
+                className="text-black dark:text-gray-200"
+                htmlFor="textarea"
+              >
+                Description:
+              </label>
+              <textarea
+                onChange={handleChange}
+                name="description"
+                id="textarea"
+                className="block w-full px-4 py-2 mt-2 text-black bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-[#70ACC7] dark:focus:border-[#70ACC7] focus:outline-none focus:ring-[#70ACC7]"
+              ></textarea>
+            </div>
           </div>
           <div className="flex justify-end mt-6">
-            <button
+            <Button
               type="submit"
-              className="px-6 py-2 leading-5 text-black transition-colors duration-200 transform bg-green-500 rounded-md hover:bg-green-700 focus:outline-none focus:bg-gray-600"
-              style={{ backgroundColor: '#54B435' }}
+              className="bg-[#70ACC7] hover:bg-[#cbefff] -100 hover:text-black"
             >
-              Submit
-            </button>
+              <span>Next</span>
+            </Button>
           </div>
         </form>
-      </section> 
-      
-      
-       <br />
-      <br />
-      <br />
-      <br />
-      <h1 className=" text-4xl text-center text-black">My Fields</h1>
-      <br />
-      <hr />
-     
+      </section>
 
       {/* <div className="min-h-screen bg-white flex justify-center items-center py-20">
       <div className="md:px-4 md:grid md:grid-cols-2 lg:grid-cols-3 gap-5 space-y-4 md:space-y-0">
@@ -414,19 +528,6 @@ export default function Profileadd() {
         ))}
       </div>
     </div> */}
-    
-    
-
-  
-
-
-
-
     </>
   );
 }
-
-
-
-
-

@@ -7,6 +7,7 @@ import { IoHelpCircleOutline } from "react-icons/io5";
 import Profilehome from "../component/ProfileHome";
 import ProfileSettings from "../component/ProfileSetting";
 import Profileadd from "../component/ProfileAdd";
+import { BiChip } from "react-icons/bi";
 
 export default function UserProfile() {
   const navigate = useNavigate();
@@ -95,9 +96,9 @@ export default function UserProfile() {
                 className="flex items-center p-2 rounded-lg hover:bg-[#cbefff] -100 hover:text-black dark:hover:bg-black-700"
                 onClick={() => handleLinkClick("add")}
               >
-                <FaFutbol className="w-6 h-6" style={{ color: "black" }} />
+                <BiChip className="w-6 h-6" style={{ color: "black" }} />
                 <span className="flex-1 ml-3 whitespace-nowrap">
-                  Football Field
+                  Projects
                 </span>
                 <span className="inline-flex items-center justify-center px-2 ml-3 text-sm font-medium text-gray-800 bg-gray-200 rounded-full dark:bg-gray-700 dark:text-gray-300"></span>
               </a>

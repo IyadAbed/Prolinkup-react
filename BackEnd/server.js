@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const userRouts = require("./Routes/userRouter");
-const specialist = require("./Routes/specialistRouter");
+const projectRouter = require("./Routes/projectRouter");
 const port = process.env.PORT;
 const dbUrl = process.env.DBURL;
 const path = require("path");
@@ -12,11 +12,9 @@ app.use(cors());
 app.use(express.json());
 app.use("/public", express.static(path.join(__dirname, "public")));
 
-app.get("/", (req, res) => {
-  res.send("Welcome");
-});
 app.use(userRouts);
-app.use(specialist);
+app.use(projectRouter);
+
 
 module.exports = {
   server: app,

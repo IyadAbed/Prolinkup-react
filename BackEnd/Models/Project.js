@@ -1,12 +1,7 @@
 const mongoose = require("mongoose");
 
 const projectSchema = new mongoose.Schema({
-  user_id: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-    required: true,
-  },
-  title: {
+  name: {
     type: String,
     required: true,
   },
@@ -14,15 +9,39 @@ const projectSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  requirements: {
-    type: [String],
-    required: true,
+  owner: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
   },
-  status: {
+  specialists: [
+    {
+      specialist: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+      status: {
+        type: String,
+        enum: ["pending", "cancelled", "accepted"],
+        default: "pending",
+      },
+    },
+  ],
+  imageUrl: {
     type: String,
-    required: true,
   },
-  // ... other fields as per your requirements
-},{ timestamp: true });
+  tasks: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Task",
+    },
+  ],
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+  updatedAt: {
+    type: Date,
+    default: Date.now,
+  },
+});
 
-module.exports = mongoose.model("Project", projectSchema);
+const Project = mongoose.model("Project", projectSchema);
+
+module.exports = Project;

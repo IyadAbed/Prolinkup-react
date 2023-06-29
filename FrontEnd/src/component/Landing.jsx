@@ -14,7 +14,7 @@ function Landing() {
               So Let’s</span><span> Make your</span><span> Dream </span><span>Become true</span>
             </p>
             </div>
-            <Link to="/SignUp" className="btn font-mono">
+            <Link to="/startDream" className="btn font-mono">
               Start your dream
             </Link>
           </div>

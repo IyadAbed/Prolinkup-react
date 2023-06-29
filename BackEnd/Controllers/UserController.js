@@ -1,7 +1,6 @@
 const User = require("../Models/User");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-const path = require("path");
 
 function generateToken({ firstName, email }) {
   const user = { firstName, email };
@@ -19,7 +18,7 @@ function generateTokenLogin({ email }) {
 module.exports = {
   addUser: async (req, res) => {
     try {
-      const { fullName, password, email, user_type } = req.body;
+      const { fullName, password, email, skills, experience, major } = req.body;
       const token = generateToken({
         name: fullName,
         email: email,
@@ -28,12 +27,14 @@ module.exports = {
         name: fullName,
         email: email,
         password: password,
-        user_type: user_type,
+        skills,
+        experience,
+        major
       });
 
       const users = await User.findOne({ email });
       if (users) {
-        return res.json({ error: "email has already exist" });
+        return res.json({ error: "this email is already exists" });
       }
 
       const newUser = await newAccount.save();
@@ -78,13 +79,14 @@ module.exports = {
       const {id} = req.params
       const name = req.body.name;
       const imagePath = req.file.path;
+      const imageUrl = `http://localhost:5000/${imagePath}`
       const user = await User.findById(id)
 
       if (!user) {
         console.log("User not found");
         return;
       }
-      user.imageUrl = imagePath || user.imageUrl
+      user.imageUrl = imageUrl || user.imageUrl
       user.name = name || user.name
       const updatedUser = await user.save();
       res.json(updatedUser);
@@ -109,15 +111,4 @@ module.exports = {
     }
   },
 
-  getimage: async (req, res) => {
-    try {
-      const {id} = req.params
-      console.log(id);
-      const user = await User.findById(id)
-      const image = `http://localhost:5000/${user.imageUrl}`;
-      res.json({image, user});
-    } catch (error) {
-      console.error("error git image Url", error.message);
-    }
-},
 };
