@@ -13,6 +13,10 @@ const projectSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
   },
+  skillsNeeded: {
+    type: [], 
+    required: true,
+  },
   specialists: [
     {
       specialist: { type: mongoose.Schema.Types.ObjectId, ref: "User" },

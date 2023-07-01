@@ -35,8 +35,11 @@ const userSchema = new mongoose.Schema({
     // required: true,
   },
   projects: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Project',
+    project:{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Project'
+    },
+    messages:[String]
   }],
   projectTodo: [
     {
@@ -49,6 +52,7 @@ const userSchema = new mongoose.Schema({
           enum: ['pending', 'cancelled', 'accepted'],
           default: 'pending',
         },
+        messages: [String]
     },
   ],
   createdAt: {

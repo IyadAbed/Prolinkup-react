@@ -32,7 +32,7 @@ export default function UserProvider({ children }) {
         return e.message;
       });
   ;
-  },[user._id])
+  },[user._id, user.projects])
   useEffect(() => {
     userRefresh()
   },[])

@@ -6,8 +6,7 @@ import Project from "./Projects";
 
 function MyProject() {
   const { user, userRefresh, projectInfo } = useContext(UserContext);
-  console.log(projectInfo);
-  // console.log(projectInfo[0].imageUrl);
+
 
   return (
     <>
@@ -34,9 +33,9 @@ function MyProject() {
                   <th className="font-normal text-left pl-20">Deadline</th>
                 </tr>
               </thead>
-              {projectInfo?.map(({ name, imageUrl }) => (
+              {projectInfo?.map(({ name, imageUrl, _id }) => (
                 <>
-                  <Project name={name} image={imageUrl} />
+                  <Project name={name} image={imageUrl} id={_id} />
                 </>
               ))}
             </table>

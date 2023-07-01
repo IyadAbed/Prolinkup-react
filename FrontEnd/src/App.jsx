@@ -15,59 +15,59 @@ import UserProfile from "./page/UserProfile";
 import { useContext } from "react";
 import { AuthContext } from "./Context/AuthContext";
 import Page404 from "./page/page404";
-
+import Details from "./component/details";
 
 function App() {
-  const {auth} = useContext(AuthContext)
+  const { auth } = useContext(AuthContext);
   return (
     <>
       <BrowserRouter>
         {auth ? (
           <>
-          <Nav />
-        <Routes>
-          <Route index element={<Home />} />
-          <Route path="Home" element={<Home />} />
-          <Route path="About" element={<About />} />
-          <Route path="Contact" element={<Contact />} />
-          <Route path="Chat" element={<Chat />} />
-          <Route path="StartDream" element={<StartDream />}>
-            <Route index element={<DreamCreation />}/>
-            <Route path="DreamCreation" element={<DreamCreation />} />
-            <Route path="Matching" element={<Matching />} />
-          </Route>
-          <Route path="Signup" element={<Page404 />} />
-          <Route path="Signin" element={<Page404 />} />
-          <Route path="Dashboard" element={<Dashboard/>} />
-          <Route path="profile" element= {<UserProfile />}/>
-          <Route path="*" element= {<Page404 />}/>
-        </Routes>
-        <Footer />
+            <Nav />
+            <Routes>
+              <Route index element={<Home />} />
+              <Route path="Home" element={<Home />} />
+              <Route path="About" element={<About />} />
+              <Route path="Contact" element={<Contact />} />
+              <Route path="Chat" element={<Chat />} />
+              <Route path="StartDream" element={<StartDream />}>
+                <Route index element={<DreamCreation />} />
+                <Route path="DreamCreation" element={<DreamCreation />} />
+                <Route path="Matching" element={<Matching />} />
+              </Route>
+              <Route path="Signup" element={<Page404 />} />
+              <Route path="Signin" element={<Page404 />} />
+              <Route path="Dashboard" element={<Dashboard />} />
+              <Route path="profile" element={<UserProfile />} />
+              <Route path="details/:id" element={<Details />} />
+              <Route path="*" element={<Page404 />} />
+            </Routes>
+            <Footer />
           </>
-        ):(
+        ) : (
           <>
-                    <Nav />
-        <Routes>
-          <Route index element={<Home />} />
-          <Route path="Home" element={<Home />} />
-          <Route path="About" element={<About />} />
-          <Route path="Contact" element={<Contact />} />
-          <Route path="Chat" element={<Page404 />} />
-          <Route path="StartDream" element={<StartDream />}>
-            <Route index element={<DreamCreation />}/>
-            <Route path="DreamCreation" element={<DreamCreation />} />
-            <Route path="Matching" element={<Matching />} />
-          </Route>
-          <Route path="Signup" element={<Signup/>} />
-          <Route path="Signin" element={<Signin/>} />
-          <Route path="Dashboard" element={<Page404 />} />
-          <Route path="profile" element= {<Page404 />}/>
-          <Route path="*" element= {<Page404 />}/>
-        </Routes>
-        <Footer />
+            <Nav />
+            <Routes>
+              <Route index element={<Home />} />
+              <Route path="Home" element={<Home />} />
+              <Route path="About" element={<About />} />
+              <Route path="Contact" element={<Contact />} />
+              <Route path="Chat" element={<Page404 />} />
+              <Route path="StartDream" element={<StartDream />}>
+                <Route index element={<DreamCreation />} />
+                <Route path="DreamCreation" element={<DreamCreation />} />
+                <Route path="Matching" element={<Matching />} />
+              </Route>
+              <Route path="Signup" element={<Signup />} />
+              <Route path="Signin" element={<Signin />} />
+              <Route path="Dashboard" element={<Page404 />} />
+              <Route path="profile" element={<Page404 />} />
+              <Route path="*" element={<Page404 />} />
+            </Routes>
+            <Footer />
           </>
-        )
-      }
+        )}
       </BrowserRouter>
     </>
   );

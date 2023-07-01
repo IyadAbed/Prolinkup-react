@@ -7,7 +7,8 @@ import { IoHelpCircleOutline } from "react-icons/io5";
 import Profilehome from "../component/ProfileHome";
 import ProfileSettings from "../component/ProfileSetting";
 import Profileadd from "../component/ProfileAdd";
-import { BiChip } from "react-icons/bi";
+import { BiChip, BiGitMerge } from "react-icons/bi";
+import Request from "../component/Request";
 
 export default function UserProfile() {
   const navigate = useNavigate();
@@ -20,6 +21,8 @@ export default function UserProfile() {
       return <ProfileSettings goBack={() => handleLinkClick("home")} />;
     } else if (activeLink === "add") {
       return <Profileadd />;
+    } else if (activeLink === "request") {
+      return <Request />;
     }
   };
 
@@ -33,7 +36,6 @@ export default function UserProfile() {
   }
 
   return (
-
     <>
       <button
         data-drawer-target="logo-sidebar"
@@ -58,27 +60,29 @@ export default function UserProfile() {
         </svg>
       </button>
       <aside
-      id="logo-sidebar"
-      className="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0"
-      style={{ backgroundColor: "#70ACC7", color: "white" }}
-      aria-label="Sidebar"
+        id="logo-sidebar"
+        className="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0"
+        style={{ backgroundColor: "#70ACC7", color: "white" }}
+        aria-label="Sidebar"
       >
         <div className="h-full px-2 py-2 overflow-y-auto">
-        <Link to="/" className="self-center text-2xl font-semibold whitespace-nowrap">
-        🐐 GOAT Field
-      </Link>
+          <Link
+            to="/"
+            className="self-center text-2xl font-semibold whitespace-nowrap"
+          >
+            🐐 PLU
+          </Link>
           <br />
           <br />
           <ul className="space-y-2 font-medium">
-
-          <Link
-          to="/"
-          className="flex items-center p-2 rounded-lg hover:bg-[#cbefff] -100 hover:text-black dark:hover:bg-black-700"
-          onClick={() => handleLinkClick("home")}
-        >
-          <AiFillHome className="w-5 h-5" style={{ color: "black" }} />
-          <span className="ml-3">Home</span>
-        </Link>
+            <Link
+              to="/"
+              className="flex items-center p-2 rounded-lg hover:bg-[#cbefff] -100 hover:text-black dark:hover:bg-black-700"
+              onClick={() => handleLinkClick("home")}
+            >
+              <AiFillHome className="w-5 h-5" style={{ color: "black" }} />
+              <span className="ml-3">Home</span>
+            </Link>
 
             <li>
               <a
@@ -97,33 +101,30 @@ export default function UserProfile() {
                 onClick={() => handleLinkClick("add")}
               >
                 <BiChip className="w-6 h-6" style={{ color: "black" }} />
-                <span className="flex-1 ml-3 whitespace-nowrap">
-                  Projects
-                </span>
+                <span className="flex-1 ml-3 whitespace-nowrap">Projects</span>
                 <span className="inline-flex items-center justify-center px-2 ml-3 text-sm font-medium text-gray-800 bg-gray-200 rounded-full dark:bg-gray-700 dark:text-gray-300"></span>
               </a>
             </li>
             <li>
-            <li>
-            <Link
-            to = "/FAQs"
-              className="flex items-center p-2 rounded-lg hover:bg-[#cbefff] -100 hover:text-black dark:hover:bg-black-700"
-              onClick={() => handleLinkClick("home")}
-            >
-              <IoHelpCircleOutline className="w-7 h-7" style={{ color: "black" }} />
-              <span className="ml-3">Help</span>
-              </Link>
-          </li>
+              <li>
+                <a
+                  className="flex items-center p-2 rounded-lg hover:bg-[#cbefff] -100 hover:text-black dark:hover:bg-black-700"
+                  onClick={() => handleLinkClick("request")}
+                >
+                  <BiGitMerge
+                    className="w-7 h-7"
+                    style={{ color: "black" }}
+                  />
+                  <span className="ml-3">Request</span>
+                </a>
+              </li>
               <a
                 onClick={handleLogout}
                 href="#"
                 className="flex items-center p-2 rounded-lg hover:bg-[#cbefff] -100 hover:text-black dark:hover:bg-black-700"
               >
                 <FiLogOut className="w-7 h-7" style={{ color: "black" }} />
-                <span className="flex-1 ml-3 whitespace-nowrap">
-                  Log out
-                </span>
-
+                <span className="flex-1 ml-3 whitespace-nowrap">Log out</span>
               </a>
             </li>
           </ul>
@@ -146,5 +147,4 @@ export default function UserProfile() {
       <br />
     </>
   );
-
 }

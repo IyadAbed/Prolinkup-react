@@ -7,8 +7,9 @@ import {
   DialogFooter,
 } from "@material-tailwind/react";
 import { BiEdit } from 'react-icons/bi';
+import { Link } from 'react-router-dom';
 
-function Projects({image,name, projectId}) {
+function Projects({image,name, id}) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(!open);
   const [show, setShow] = useState(false);
@@ -27,6 +28,8 @@ function Projects({image,name, projectId}) {
     <>
             <tbody className="w-full">
               <tr className="h-20 text-sm leading-none text-gray-800 bg-white hover:bg-gray-100 border-b border-t border-gray-100">
+                <Link
+                to={`/details/${id}`}>
                 <td className="pl-4 cursor-pointer">
                   <div className="flex items-center">
                     <div className="w-10 h-10">
@@ -45,6 +48,7 @@ function Projects({image,name, projectId}) {
                     </div>
                   </div>
                 </td>
+                </Link>
                 <td className="pl-12">
                   <p className="text-sm font-medium leading-none text-gray-800">
                     72%

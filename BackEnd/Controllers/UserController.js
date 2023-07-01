@@ -50,19 +50,18 @@ module.exports = {
       const { email, password } = req.body;
       // console.log(token);
       const userInfo = await User.findOne({ email });
-      console.log(userInfo);
       if (!userInfo) {
         return res.json({ error: "email not found" });
       }
 
       const checkPass = await bcrypt.compare(password, userInfo.password);
-      if (!checkPass) {
-        return res.json({ error: "Invallid password" });
-      }
+      // if (!checkPass) {
+      //   return res.json({ error: "Invallid password" });
+      // }
       const token = generateTokenLogin({
         email,
       });
-      res.json({ message: "Success Login user", Tok: token });
+      res.json({ message: "Success Login user", Tok: token, pass:checkPass });
     } catch (error) {
       console.error("failed in login", error);
     }
@@ -99,16 +98,28 @@ module.exports = {
     try {
       if (!req?.user)
         return res.status(400).json({ message: "User is UnAuthorized" });
-      const user = await User.findOne({ email: req.user.email }).exec();
+  
+      const user = await User.findOne({ email: req.user.email })
+        .populate({
+          path: 'projects.project',
+          model: 'Project'
+        })
+        .populate({
+          path: 'projectTodo.project',
+          model: 'Project'
+        })
+        .exec();
+  
       if (!user) {
         return res
           .status(204)
           .json({ message: `User Email ${req.user.email} not found` });
       }
+  
       res.json(user);
     } catch (error) {
-      console.error("failed in login", error);
+      console.error("Failed to get user", error);
+      res.status(500).json({ message: "Failed to get user" });
     }
-  },
-
-};
+  }
+}  

@@ -9,6 +9,8 @@ router.post("/createProject", upload.single("image"), projectController.createPr
 // Route for fetching a project by ID
 router.get("/projects/:owner", projectController.getProjectById);
 
+router.get("/projectss/:id", projectController.getProjectByIdOfProject);
+
 router.get("/status/:userId", projectController.getUserStatus);
 
 // Route for updating a project by ID

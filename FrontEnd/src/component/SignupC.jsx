@@ -2,8 +2,9 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../Context/AuthContext";
 import { UserContext } from "../Context/UserContext";
-import { Select, Option } from "@material-tailwind/react";
+import Select from "react-select";
 import axios from "axios";
+import skillsData from "./skillsData";
 export default function SignupC() {
   const [errors, setErrors] = useState({});
   const [serverError, setServerError] = useState();
@@ -42,68 +43,22 @@ export default function SignupC() {
     return errors;
   };
 
-  const [selectedValue, setSelectedValue] = useState("");
+  const [major, setMajor] = useState("");
 
-  console.log(selectedValue)
-
-  const handleSelectChange = (event) => {
-    setSelectedValue(event);
+  const handleMajorChange = (event) => {
+    setMajor(event.target.value);
   };
 
-  const options = [
-    { value: "html", label: "HTML" },
-    { value: "css", label: "CSS" },
-    { value: "javascript", label: "JavaScript" },
-    { value: "react", label: "React" },
-    { value: "nodejs", label: "Node.js" },
-    { value: "expressjs", label: "Express.js" },
-    // Add more web development skills as needed
-  ];
+  const [skills, setSkills] = useState([])
+  const newSkills = skills.map((skill)=>{
+    return skill.value
+  })
+  console.log(newSkills);
+  const options = skillsData.map(skill => ({
+    value: skill.value,
+    label: skill.label
+  }));
 
-  const [selectedOptions, setSelectedOptions] = useState([]);
-  const [isOpen, setIsOpen] = useState(false);
-  const dropdownRef = useRef(null);
-
-  const handleOptionChange = (option) => {
-    const selectedValues = selectedOptions.map(
-      (selectedOption) => selectedOption
-    );
-
-    if (selectedValues.includes(option.value)) {
-      setSelectedOptions(
-        selectedOptions.filter(
-          (selectedOption) => selectedOption !== option.value
-        )
-      );
-    } else {
-      setSelectedOptions([...selectedOptions, option.value]);
-    }
-  };
-
-  const toggleDropdown = () => {
-    e.preventDefault();
-    setIsOpen(!isOpen);
-  };
-
-  const handleClickOutside = (event) => {
-    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-      setIsOpen(false);
-    }
-  };
-
-  useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
-
-  const getSelectedOptionLabels = () => {
-    return selectedOptions.map((value) => {
-      const option = options.find((option) => option.value === value);
-      return option ? option.label : "";
-    });
-  };
 
   const [newUser, setNewUser] = useState({
     name: "",
@@ -130,8 +85,8 @@ export default function SignupC() {
         password: newUser.password,
         email: newUser.email,
         experience: newUser.experience,
-        skills: selectedOptions,
-        major: selectedValue
+        skills: newSkills,
+        major:major
       };
       const res = await axios.post("http://localhost:5000/addUser", userData);
       if (res.data.error == "this email is already exists") {
@@ -213,42 +168,45 @@ export default function SignupC() {
           />
         </div>
         {/* /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */}
-        <div className="w-full">
-          <Select
-            label="Select Major"
-            onChange={handleSelectChange}
-            value={selectedValue}
-          >
-            <Option value="fullstack">FullStack</Option>
-            <Option value="frontend">FrontEnd</Option>
-            <Option value="backend">BackEnd</Option>
-          </Select>
-        </div>
-        <div className="relative" ref={dropdownRef}>
-          <button
-            onClick={toggleDropdown}
-            className="w-full py-2 pl-3 pr-10 text-left bg-white border border-gray-300 rounded-md shadow-sm cursor-pointer focus:outline-none focus:ring-1 focus:ring-blue-500"
-          >
-            Skills: {getSelectedOptionLabels().join(", ")}
-          </button>
-          {isOpen && (
-            <div className="absolute right-0 w-full mt-2 bg-white border border-gray-300 rounded-md shadow-lg">
-              {options.map((option) => (
-                <div
-                  key={option.value}
-                  onClick={() => handleOptionChange(option)}
-                  className={`px-4 py-2 cursor-pointer hover:bg-blue-500 hover:text-white ${
-                    selectedOptions.includes(option.value)
-                      ? "bg-blue-500 text-white"
-                      : "bg-white text-gray-700"
-                  }`}
-                >
-                  {option.label}
-                </div>
-              ))}
+        <div>
+              <label
+                className="text-black dark:text-gray-200"
+                htmlFor="emailAddress"
+              >
+                Major
+              </label>
+              <select
+                onChange={handleMajorChange}
+                value={major}
+                id="fieldType"
+                className="block w-full px-4 py-2 mt-2 text-black bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-[#70ACC7] dark:focus:border-[#70ACC7] focus:outline-none focus:ring-[#70ACC7]"
+              >
+                <option value="">Select Size</option>
+                <option value="Web development">Web development</option>
+                <option value="Cloud">Cloud</option>
+                <option value="AI">AI</option>
+              </select>
             </div>
-          )}
-        </div>
+        <div>
+              <label
+                className="text-black dark:text-gray-200"
+                htmlFor="fieldType"
+              >
+                Skill's needed:
+              </label>
+              <br />
+              <Select
+                onChange={(e) => {
+                  setSkills(e);
+                }}
+                defaultValue={[options[0], options[3]]}
+                isMulti
+                name="skills"
+                options={options}
+                className="basic-multi-select"
+                classNamePrefix="select"
+              />
+            </div>
         {/* /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */}
 
         <Link

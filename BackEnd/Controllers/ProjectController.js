@@ -2,18 +2,55 @@ const Project = require("../Models/Project");
 const User = require("../Models/User");
 
 // Controller action for creating a new project
+// exports.createProject = async (req, res) => {
+//   try {
+//     const { name, description, owner } = req.body;
+//     const imagePath = req.file.path;
+//     const imageUrl = `http://localhost:5000/${imagePath}`;
+//     // Create a new project instance
+
+//     const project = new Project({
+//       name,
+//       description,
+//       owner,
+//       imageUrl,
+//     });
+
+//     // Save the project to the database
+//     await project.save();
+
+//     // Find the owner by ID
+//     const user = await User.findById(owner);
+
+//     if (!user) {
+//       return res.status(404).json({ message: "Owner not found" });
+//     }
+
+//     // Add the project ID to the owner's projects array
+//     user.projects.push(project._id);
+
+//     // Save the updated user
+//     await user.save();
+
+//     res.status(201).json({ message: "Project created successfully" });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ message: "Error adding new project" });
+//   }
+// };
 exports.createProject = async (req, res) => {
   try {
-    const { name, description, owner } = req.body;
+    const { name, description, owner, skillsNeeded } = req.body;
     const imagePath = req.file.path;
     const imageUrl = `http://localhost:5000/${imagePath}`;
-    // Create a new project instance
 
+    // Create a new project instance
     const project = new Project({
       name,
       description,
       owner,
       imageUrl,
+      skillsNeeded,
     });
 
     // Save the project to the database
@@ -27,17 +64,23 @@ exports.createProject = async (req, res) => {
     }
 
     // Add the project ID to the owner's projects array
-    user.projects.push(project._id);
+    user.projects.push({project: project._id});
 
     // Save the updated user
     await user.save();
 
-    res.status(201).json({ message: "Project created successfully" });
+    // Find the matching users based on their skills
+
+    res.status(201).json({
+      projectId: project._id,
+      message: "Project created successfully",
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Error adding new project" });
   }
 };
+
 
 // Controller action for fetching a project by ID
 exports.getProjectById = async (req, res) => {
@@ -53,6 +96,28 @@ exports.getProjectById = async (req, res) => {
     res.status(200).json(project);
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+exports.getProjectByIdOfProject = async (req, res) => {
+  try {
+    const { id } = req.params;
+    // Find the project by ID
+    const project = await Project.findById(id);
+    if (!project) {
+      return res.status(404).json({ message: "Project not found" });
+    }
+
+    const skillsNeeded = project.skillsNeeded
+
+    const matchingUsers = await User.find({
+      skills: { $in: skillsNeeded },
+      _id: { $ne: project.owner } 
+    }).sort({ skills: -1 });
+
+    res.status(200).json({project, matchingUsers});
+  } catch (error) {
+    res.status(500).json({ message: "Error in finding the project" });
   }
 };
 
@@ -83,7 +148,7 @@ exports.updateProjectById = async (req, res) => {
 exports.sendRequest = async (req, res) => {
   try {
     const { userId } = req.params;
-    const { projectId } = req.body;
+    const { projectId, message } = req.body;
 
     // Find the user by ID
     const user = await User.findById(userId);
@@ -107,6 +172,7 @@ exports.sendRequest = async (req, res) => {
     const projectObj = {
       project: projectId,
       status: "pending",
+      messages: message
     };
 
     project.specialists.push(addSpecialistToProject);
@@ -287,7 +353,8 @@ exports.deleteProject = async (req, res) => {
 
     if (acceptedSpecialists) {
       return res.status(400).json({
-        message: "Cannot delete the project as specialists have accepted requests.",
+        message:
+          "Cannot delete the project as specialists have accepted requests.",
       });
     }
 
@@ -300,4 +367,3 @@ exports.deleteProject = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
-
