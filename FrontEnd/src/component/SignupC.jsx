@@ -1,11 +1,13 @@
 import { useContext, useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../Context/AuthContext";
 import { UserContext } from "../Context/UserContext";
 import Select from "react-select";
 import axios from "axios";
 import skillsData from "./skillsData";
 export default function SignupC() {
+
+  const navigate = useNavigate()
   const [errors, setErrors] = useState({});
   const [serverError, setServerError] = useState();
   // console.log(serverError);
@@ -96,6 +98,7 @@ export default function SignupC() {
         setAuth(true);
         userRefresh();
         refresh();
+        navigate("/home")
       }
     } else {
       setErrors(errors);

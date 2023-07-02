@@ -19,23 +19,33 @@ const projectSchema = new mongoose.Schema({
   },
   specialists: [
     {
-      specialist: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+      specialist: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+      },
       status: {
         type: String,
-        enum: ["pending", "cancelled", "accepted"],
-        default: "pending",
+        enum: ['pending', 'cancelled', 'accepted'],
+        default: 'pending',
+      },
+      chat: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Chat',
       },
     },
   ],
   imageUrl: {
     type: String,
   },
-  tasks: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Task",
+  payment: {
+    price: {
+      type: Number
     },
-  ],
+    isPaid: {
+      type:Boolean,
+      default: false
+    }
+  },
   createdAt: {
     type: Date,
     default: Date.now,

@@ -8,7 +8,7 @@ const Details = () => {
 
   const [projectInfo, setProjectInfo] = useState("");
 
-  const [usersMatch, setUsersMatch] = useState([])
+  const [usersMatch, setUsersMatch] = useState([]);
 
   useEffect(() => {
     axios
@@ -17,7 +17,7 @@ const Details = () => {
         if (res.data) {
           console.log(res.data);
           setProjectInfo(res.data.project);
-          setUsersMatch(res.data.matchingUsers)
+          setUsersMatch(res.data.matchingUsers);
         }
       })
       .catch((e) => {
@@ -127,10 +127,14 @@ const Details = () => {
         </div>
       </div>
       <div className="mx-auto container py-8">
+        <h3 class="text-3xl font-bold dark:text-white text-center my-10">
+          Specialist might work in your project
+        </h3>
         <div className="flex flex-wrap items-center lg:justify-between justify-center">
           {/* Card 1 */}
-            {usersMatch.map(({name, major, imageUrl, skills, _id})=>{
-              return <SpecialistCard 
+          {usersMatch.map(({ name, major, imageUrl, skills, _id }) => {
+            return (
+              <SpecialistCard
                 major={major}
                 name={name}
                 imageUrl={imageUrl}
@@ -138,7 +142,8 @@ const Details = () => {
                 projectId={id}
                 userId={_id}
               />
-            })}
+            );
+          })}
         </div>
       </div>
     </div>

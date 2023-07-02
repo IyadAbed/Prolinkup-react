@@ -13,6 +13,8 @@ router.get("/projectss/:id", projectController.getProjectByIdOfProject);
 
 router.get("/status/:userId", projectController.getUserStatus);
 
+router.put("/payment/:id", projectController.payment)
+
 // Route for updating a project by ID
 router.put("/updateProjectById/:projectId", projectController.updateProjectById);
 

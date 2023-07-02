@@ -3,8 +3,11 @@ import LogoWT from "../image/LogoWT.png";
 import axios from "axios";
 import { AuthContext } from "../Context/AuthContext";
 import { UserContext } from "../Context/UserContext";
+import { useNavigate } from "react-router-dom";
 
 function Signin() {
+
+  const navigate = useNavigate()
   let { auth, setAuth, refresh } = useContext(AuthContext);
   let { user, setUser, userRefresh } = useContext(UserContext);
   const [errors, setErrors] = useState({});
@@ -66,6 +69,7 @@ function Signin() {
         setAuth(true);
         userRefresh();
         refresh();
+        navigate("/home")
       }
     } else {
       setErrors(errors);

@@ -7,8 +7,11 @@ import { Button } from "@material-tailwind/react";
 import MyProject from "./MyProject";
 import { UserContext } from "../Context/UserContext";
 import skillsData from "./skillsData"
+import { useNavigate } from "react-router-dom";
 
 export default function Profileadd() {
+
+  const navigate = useNavigate()
   const options = skillsData.map(skill => ({
     value: skill.value,
     label: skill.label
@@ -71,6 +74,7 @@ export default function Profileadd() {
       const { projectId } = response.data;
       console.log("Project ID:", projectId);
       userRefresh();
+      navigate(`/details/${projectId}`)
     } catch (error) {
       console.log(error);
     }

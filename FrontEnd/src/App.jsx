@@ -4,7 +4,6 @@ import Home from "./page/Home";
 import Footer from "./component/Footer";
 import About from "./page/About";
 import Contact from "./page/Contact";
-import Chat from "./page/Chat";
 import StartDream from "./page/StartDream";
 import Signup from "./page/Signup";
 import Signin from "./page/Signin";
@@ -16,6 +15,8 @@ import { useContext } from "react";
 import { AuthContext } from "./Context/AuthContext";
 import Page404 from "./page/page404";
 import Details from "./component/details";
+import ChatComponent from "./page/Chat";
+import Payment from "./page/Payment";
 
 function App() {
   const { auth } = useContext(AuthContext);
@@ -30,7 +31,6 @@ function App() {
               <Route path="Home" element={<Home />} />
               <Route path="About" element={<About />} />
               <Route path="Contact" element={<Contact />} />
-              <Route path="Chat" element={<Chat />} />
               <Route path="StartDream" element={<StartDream />}>
                 <Route index element={<DreamCreation />} />
                 <Route path="DreamCreation" element={<DreamCreation />} />
@@ -41,6 +41,7 @@ function App() {
               <Route path="Dashboard" element={<Dashboard />} />
               <Route path="profile" element={<UserProfile />} />
               <Route path="details/:id" element={<Details />} />
+              <Route path="checkOut/:id" element={<Payment />} />
               <Route path="*" element={<Page404 />} />
             </Routes>
             <Footer />

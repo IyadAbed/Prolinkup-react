@@ -86,18 +86,21 @@ exports.createProject = async (req, res) => {
 exports.getProjectById = async (req, res) => {
   try {
     const { owner } = req.params;
-    // Find the project by ID
-    const project = await Project.find({ owner });
+    // Find the project by ID and populate the 'specialists' field with their details
+    const project = await Project.find({ owner })
+      .populate('specialists.specialist')
+      .exec();
 
     if (!project) {
-      return res.status(404).json({ message: "Project not found" });
+      return res.status(404).json({ message: 'Project not found' });
     }
 
     res.status(200).json(project);
   } catch (error) {
-    res.status(500).json({ message: "Internal server error" });
+    res.status(500).json({ message: 'Internal server error' });
   }
 };
+
 
 exports.getProjectByIdOfProject = async (req, res) => {
   try {
@@ -105,7 +108,7 @@ exports.getProjectByIdOfProject = async (req, res) => {
     // Find the project by ID
     const project = await Project.findById(id);
     if (!project) {
-      return res.status(404).json({ message: "Project not found" });
+      return res.status(500).json({ message: "Project not found" });
     }
 
     const skillsNeeded = project.skillsNeeded
@@ -118,6 +121,27 @@ exports.getProjectByIdOfProject = async (req, res) => {
     res.status(200).json({project, matchingUsers});
   } catch (error) {
     res.status(500).json({ message: "Error in finding the project" });
+  }
+};
+
+
+exports.payment = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const price = req.body.price
+    // Find the project by ID
+    const project = await Project.findByIdAndUpdate(id, {
+      payment:{
+        price,
+        isPaid: true
+      }
+    });
+    if (!project) {
+      return res.status(500).json({ message: "Project not found" });
+    }
+    res.status(200).json("payment Done");
+  } catch (error) {
+    res.status(500).json({ message: "Error in Payment" });
   }
 };
 
@@ -148,7 +172,7 @@ exports.updateProjectById = async (req, res) => {
 exports.sendRequest = async (req, res) => {
   try {
     const { userId } = req.params;
-    const { projectId, message } = req.body;
+    const { projectId, message, price} = req.body;
 
     // Find the user by ID
     const user = await User.findById(userId);
@@ -172,7 +196,11 @@ exports.sendRequest = async (req, res) => {
     const projectObj = {
       project: projectId,
       status: "pending",
-      messages: message
+      messages: {
+        specialist: user._id,
+        message:message
+      },
+      price
     };
 
     project.specialists.push(addSpecialistToProject);

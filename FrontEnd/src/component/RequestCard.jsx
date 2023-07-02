@@ -13,7 +13,7 @@ import {
 } from "@material-tailwind/react";
 import axios from "axios";
 
-export default function RequestCard({name, description, message, imageUrl, projectId, userId}) {
+export default function RequestCard({name, description, message, imageUrl, projectId, userId, status}) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(!open);
   const accept = {
@@ -35,6 +35,7 @@ export default function RequestCard({name, description, message, imageUrl, proje
       console.log(error);
     }
   };
+
 
   return (
     <Card className="mt-6 w-96">

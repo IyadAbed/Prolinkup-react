@@ -5,6 +5,9 @@ import { UserContext } from "../Context/UserContext";
 function Request() {
   const { user } = useContext(UserContext);
   const requests = user.projectTodo;
+  const status = requests.map(({status})=>{
+    return status
+  })
 
   return (
     <>
@@ -15,10 +18,11 @@ function Request() {
             <RequestCard 
             name= {project.name} 
             description= {project.description} 
-            message= {messages} 
+            message= {messages.message} 
             imageUrl= {project.imageUrl}
             projectId= {project._id}
-            userId= {user._id} 
+            userId= {user._id}
+            status= {status}
             />
             </>);
           })}

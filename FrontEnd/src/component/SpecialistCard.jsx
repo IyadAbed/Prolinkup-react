@@ -8,14 +8,17 @@ import {
   DialogFooter,
 } from "@material-tailwind/react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function SpecialistCard({ major, name, imageUrl, skills, projectId, userId }) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(!open);
   const [requestInfo, SetRequestInfo] = useState({
     message: "",
-    projectId
+    projectId,
+    price: Number
   });
+  const navigate = useNavigate()
   const handleChange = (e) => {
     const { name, value } = e.target;
     SetRequestInfo((prev) => ({
@@ -26,17 +29,27 @@ function SpecialistCard({ major, name, imageUrl, skills, projectId, userId }) {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    try {
-      await axios.put(
-        `http://localhost:5000/sendReq/${userId}`,
-        requestInfo
-      )
-      .then((res)=>{
-        console.log(res.data);
-      })
-    } catch (error) {
-      console.log(error);
-    }
+    axios.get(`http://localhost:5000/projectss/${projectId}`)
+    .then(async (res)=>{
+      console.log(res.data)
+      const isPaid = res.data.project.payment.isPaid
+      if (isPaid) {
+        
+        try {
+          await axios.put(
+            `http://localhost:5000/sendReq/${userId}`,
+            requestInfo
+          )
+          .then((res)=>{
+            console.log(res.data);
+          })
+        } catch (error) {
+          console.log(error);
+        }
+      } else{
+        navigate(`/checkOut/${projectId}`)
+      }
+    })
   };
 
   return (
@@ -133,6 +146,20 @@ function SpecialistCard({ major, name, imageUrl, skills, projectId, userId }) {
                                 id="textarea"
                                 className="block w-full px-4 py-2 mt-2 text-black bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-[#70ACC7] dark:focus:border-[#70ACC7] focus:outline-none focus:ring-[#70ACC7]"
                               ></textarea>
+                            </div>
+                            <div>
+                              <label
+                                className="text-black dark:text-gray-200"
+                              >
+                                Enter a price
+                              </label>
+                              <input
+                                onChange={handleChange}
+                                name="price"
+                                type="number"
+                                value={requestInfo.price}
+                                className="block w-full px-4 py-2 mt-2 text-black bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-[#70ACC7] dark:focus:border-[#70ACC7] focus:outline-none focus:ring-[#70ACC7]"
+                              ></input>
                             </div>
                             <br />
                           </div>
