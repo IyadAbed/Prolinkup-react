@@ -2,11 +2,13 @@ const Chat = require("../Models/Chat");
 
 exports.getChatByRecipient = async (req, res) => {
   try {
-    const { recipient } = req.params;
-    const chat = await Chat.findOne({ recipient })
+    const { recipient, sender } = req.params;
+    const chat = await Chat.findOne({
+      recipient,
+      "messages.sender": sender
+    })
       .populate("messages.sender")
       .exec();
-
     // if (!chat) {
     //   return res.status(404).json({ message: 'Chat not found' });
     // }

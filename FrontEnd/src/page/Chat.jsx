@@ -10,8 +10,7 @@ const ChatComponent = () => {
   const [selectedSpecialist, setSelectedSpecialist] = useState(null);
   const [chatMessages, setChatMessages] = useState([]);
   const [Refresh,setRefrsh ]=useState(true)
-
-  // Fetch projects from the server
+  const [messageSpecialist, setMessageSpecialist] = useState([])
   useEffect(() => {
     axios
       .get(`http://localhost:5000/projects/${user?._id}`)
@@ -27,11 +26,15 @@ const ChatComponent = () => {
 
   // Fetch chat messages for the selected specialist
   useEffect(() => {
+      console.log(chatMessages);
     if (selectedSpecialist) {
+      console.log(selectedSpecialist);
       axios
-        .get(`http://localhost:5000/chatss/${selectedSpecialist._id}`)
-        .then((res) => {
+      .get(`http://localhost:5000/chatss/${selectedSpecialist.specialist._id}/${user._id}`)
+      .then((res) => {
+          console.log(res);
           if (res.data) {
+            console.log('ffffffffff');
             console.log(res.data.messages);
             setChatMessages(res.data.messages);
           }
@@ -40,7 +43,23 @@ const ChatComponent = () => {
           return e.message;
         });
     }
-  }, [Refresh]);
+
+    
+  }, [selectedSpecialist]); // or set the selectedSpecialist as a dependancies /////////////////////////////////////////////////////////////////////
+  useEffect(() => {
+    if (selectedSpecialist) {
+      axios
+        .get(`http://localhost:5000/chatss/${user._id}/${selectedSpecialist.specialist._id}`)
+        .then((res) => {
+          if (res.data) {
+            setMessageSpecialist(res.data.messages);
+          }
+        })
+        .catch((e) => {
+          return e.message;
+        });
+    }
+  }, [selectedSpecialist]); // or set the selectedSpecialist as a dependancies /////////////////////////////////////////////////////////////////////
 
   // Handle project selection
   const handleProjectSelect = (project) => {
@@ -68,7 +87,7 @@ const ChatComponent = () => {
   const handleSendMessage = (message) => {
     const newMessage = {
       sender: user._id, // Assuming the user is the sender
-      recipient: selectedSpecialist._id,
+      recipient: selectedSpecialist.specialist._id,
       content: message,
     };
 
@@ -144,6 +163,7 @@ const ChatComponent = () => {
             {/* Example: */}
             <ChatWidget
               messages={chatMessages}
+              otherMessage={messageSpecialist}
               onSendMessage={handleSendMessage}
             />
           </div>

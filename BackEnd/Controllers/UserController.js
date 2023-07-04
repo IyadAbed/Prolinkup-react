@@ -55,9 +55,9 @@ module.exports = {
       }
 
       const checkPass = await bcrypt.compare(password, userInfo.password);
-      // if (!checkPass) {
-      //   return res.json({ error: "Invallid password" });
-      // }
+      if (!checkPass) {
+        return res.json({ error: "Invallid password" });
+      }
       const token = generateTokenLogin({
         email,
       });

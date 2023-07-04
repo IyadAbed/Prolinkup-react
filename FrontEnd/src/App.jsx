@@ -11,7 +11,7 @@ import DreamCreation from "./component/DreamCreation";
 import Matching from "./component/Matching";
 import Dashboard from "./page/Dashboard";
 import UserProfile from "./page/UserProfile";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { AuthContext } from "./Context/AuthContext";
 import Page404 from "./page/page404";
 import Details from "./component/details";
@@ -20,9 +20,19 @@ import Payment from "./page/Payment";
 
 function App() {
   const { auth } = useContext(AuthContext);
+  const ScrollToTop = () => {
+    const { pathname } = useLocation();
+
+    useEffect(() => {
+      window.scrollTo(0, 0);
+    }, [pathname]);
+
+    return null;
+  };
   return (
     <>
       <BrowserRouter>
+      <ScrollToTop />
         {auth ? (
           <>
             <Nav />

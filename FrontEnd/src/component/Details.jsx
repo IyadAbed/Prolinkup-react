@@ -7,6 +7,7 @@ const Details = () => {
   const { id } = useParams();
 
   const [projectInfo, setProjectInfo] = useState("");
+  const [isPaid, setIsPaid] = useState();
 
   const [usersMatch, setUsersMatch] = useState([]);
 
@@ -15,8 +16,8 @@ const Details = () => {
       .get(`http://localhost:5000/projectss/${id}`)
       .then((res) => {
         if (res.data) {
-          console.log(res.data);
-          setProjectInfo(res.data.project);
+          setIsPaid(res.data.projects.payment.isPaid);
+          setProjectInfo(res.data.projects);
           setUsersMatch(res.data.matchingUsers);
         }
       })
@@ -140,6 +141,7 @@ const Details = () => {
                 imageUrl={imageUrl}
                 skills={skills}
                 projectId={id}
+                isPaid={isPaid}
                 userId={_id}
               />
             );

@@ -10,6 +10,7 @@ import Profileadd from "../component/ProfileAdd";
 import { BiChip, BiGitMerge, BiMessageRounded } from "react-icons/bi";
 import Request from "../component/Request";
 import ChatComponent from "./Chat";
+import ChatComponent1 from "../component/ChatComponent";
 
 export default function UserProfile() {
   const navigate = useNavigate();
@@ -26,6 +27,8 @@ export default function UserProfile() {
       return <Request />;
     } else if (activeLink === "chat") {
       return <ChatComponent />;
+    } else if (activeLink === "chat1") {
+      return <ChatComponent1 />;
     }
   };
 
@@ -113,6 +116,17 @@ export default function UserProfile() {
                 href="#"
                 className="flex items-center p-2 rounded-lg hover:bg-[#cbefff] -100 hover:text-black dark:hover:bg-black-700"
                 onClick={() => handleLinkClick("chat")}
+              >
+                <BiMessageRounded className="w-6 h-6" style={{ color: "black" }} />
+                <span className="flex-1 ml-3 whitespace-nowrap">Chat</span>
+                <span className="inline-flex items-center justify-center px-2 ml-3 text-sm font-medium text-gray-800 bg-gray-200 rounded-full dark:bg-gray-700 dark:text-gray-300"></span>
+              </a>
+            </li>
+            <li>
+              <a
+                href="#"
+                className="flex items-center p-2 rounded-lg hover:bg-[#cbefff] -100 hover:text-black dark:hover:bg-black-700"
+                onClick={() => handleLinkClick("chat1")}
               >
                 <BiMessageRounded className="w-6 h-6" style={{ color: "black" }} />
                 <span className="flex-1 ml-3 whitespace-nowrap">Chat</span>

@@ -106,19 +106,28 @@ exports.getProjectByIdOfProject = async (req, res) => {
   try {
     const { id } = req.params;
     // Find the project by ID
-    const project = await Project.findById(id);
-    if (!project) {
+    const projects = await Project.findById(id);
+    if (!projects) {
       return res.status(500).json({ message: "Project not found" });
     }
 
-    const skillsNeeded = project.skillsNeeded
+    const skillsNeeded = projects.skillsNeeded
 
     const matchingUsers = await User.find({
       skills: { $in: skillsNeeded },
-      _id: { $ne: project.owner } 
+      _id: { $ne: projects.owner },
     }).sort({ skills: -1 });
 
-    res.status(200).json({project, matchingUsers});
+    // const ultimateUser = matchingUsers.filter((Element)=>{
+    //   Element.projectTodo.map(({project})=>{
+    //     if (project._id !== projects.owner) {
+    //       return false
+    //     }
+    //     return project
+    //   })
+    // })
+
+    res.status(200).json({projects, matchingUsers});
   } catch (error) {
     res.status(500).json({ message: "Error in finding the project" });
   }
@@ -187,10 +196,10 @@ exports.sendRequest = async (req, res) => {
       return res.status(404).json({ message: "Project not found" });
     }
 
-    const addSpecialistToProject = {
-      specialist: userId,
-      status: "pending",
-    };
+    // const addSpecialistToProject = {
+    //   specialist: userId,
+    //   status: "pending",
+    // };
 
     // Create the project object with default status 'pending'
     const projectObj = {
@@ -203,7 +212,7 @@ exports.sendRequest = async (req, res) => {
       price
     };
 
-    project.specialists.push(addSpecialistToProject);
+    // project.specialists.push(addSpecialistToProject);
 
     // Add the project object to the projectTodo array
     user.projectTodo.push(projectObj);
@@ -257,18 +266,10 @@ exports.acceptRequest = async (req, res) => {
     }
 
     // Find the specialist object in the project's specialists array
-    const specialist = project.specialists.find(
-      (sp) => sp.specialist.toString() === userId
-    );
-
-    if (!specialist) {
-      return res
-        .status(404)
-        .json({ message: "Specialist not found in the project" });
-    }
-
-    // Update the specialist's status to 'accepted'
-    specialist.status = "accepted";
+    project.specialists.push({
+      specialist: userId,
+      status: 'accepted'
+    })
 
     // Save the updated project
     await project.save();
@@ -393,5 +394,21 @@ exports.deleteProject = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+exports.getAllProjectTodo = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const user = await User.findById(userId).populate('projectTodo.project').exec();
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    const projectTodo = user.projectTodo;
+    res.status(200).json(projectTodo);
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error' });
   }
 };

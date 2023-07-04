@@ -10,7 +10,7 @@ import {
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-function SpecialistCard({ major, name, imageUrl, skills, projectId, userId }) {
+function SpecialistCard({ major, name, imageUrl, skills, projectId, userId, isPaid }) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(!open);
   const [requestInfo, SetRequestInfo] = useState({
@@ -27,14 +27,18 @@ function SpecialistCard({ major, name, imageUrl, skills, projectId, userId }) {
     }));
   };
 
+  const handleOpenIspaid = () =>{
+    if (isPaid) {
+      return handleOpen()
+    } else {
+      navigate(`/checkOut/${projectId}`)
+    }
+  }
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     axios.get(`http://localhost:5000/projectss/${projectId}`)
     .then(async (res)=>{
-      console.log(res.data)
-      const isPaid = res.data.project.payment.isPaid
-      if (isPaid) {
-        
         try {
           await axios.put(
             `http://localhost:5000/sendReq/${userId}`,
@@ -46,9 +50,6 @@ function SpecialistCard({ major, name, imageUrl, skills, projectId, userId }) {
         } catch (error) {
           console.log(error);
         }
-      } else{
-        navigate(`/checkOut/${projectId}`)
-      }
     })
   };
 
@@ -116,7 +117,7 @@ function SpecialistCard({ major, name, imageUrl, skills, projectId, userId }) {
               <Fragment>
                 <Button
                   className="bg-[#cbefff] text-black hover:bg-[#70ACC7] -100 hover:text-white"
-                  onClick={handleOpen}
+                  onClick={handleOpenIspaid}
                 >
                   <span>Send Request</span>
                 </Button>

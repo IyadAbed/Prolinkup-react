@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 
-const ChatWidget = ({ messages, onSendMessage, otherMessage }) => {
+const ChatWidget1 = ({ messages, onSendMessage, otherMessage }) => {
   const [inputMessage, setInputMessage] = useState('');
 
   const handleInputChange = (e) => {
@@ -37,7 +36,7 @@ const ChatWidget = ({ messages, onSendMessage, otherMessage }) => {
             </div>
           ))
         ) : (
-          <p className=' text-right'>No messages yet.</p>
+          <p>No messages yet.</p>
         )}
       </div>
       <form className="mt-4" onSubmit={handleFormSubmit}>
@@ -59,4 +58,4 @@ const ChatWidget = ({ messages, onSendMessage, otherMessage }) => {
   );
 };
 
-export default ChatWidget;
+export default ChatWidget1;

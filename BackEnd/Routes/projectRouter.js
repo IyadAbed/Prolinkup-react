@@ -6,6 +6,8 @@ const upload = require("../Middleware/handleimage");
 // Route for creating a new project
 router.post("/createProject", upload.single("image"), projectController.createProject);
 
+router.get('/projectTodo/:userId', projectController.getAllProjectTodo);
+
 // Route for fetching a project by ID
 router.get("/projects/:owner", projectController.getProjectById);
 
