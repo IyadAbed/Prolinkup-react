@@ -62,17 +62,30 @@ const ChatComponent1 = () => {
 
   useEffect(() => {
     if (selectedProject) {
-      console.log(selectedProject);
-      axios
-        .get(`http://localhost:5000/chatss/${user._id}/${selectedProject.owner}`)
-        .then((res) => {
-          if (res.data) {
-            setMessageSpecialist(res.data.messages);
-          }
-        })
-        .catch((e) => {
-          return e.message;
-        });
+      const fetchData = () => {
+        axios
+          .get(
+            `http://localhost:5000/chatss/${user._id}/${selectedProject.owner}`
+          )
+          .then((res) => {
+            if (res.data) {
+              setMessageSpecialist(res.data.messages);
+            }
+          })
+          .catch((e) => {
+            console.error(e.message);
+          });
+      };
+
+      fetchData(); // Initial fetch
+
+      const interval = setInterval(() => {
+        fetchData(); // Fetch data every 1 minute
+      }, 30000);
+
+      return () => {
+        clearInterval(interval); // Cleanup: clear the interval when the component unmounts or selectedProject changes
+      };
     }
   }, [selectedProject]);
 

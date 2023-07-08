@@ -13,13 +13,14 @@ import {
 } from "@material-tailwind/react";
 import axios from "axios";
 
-export default function RequestCard({name, description, message, imageUrl, projectId, userId, status}) {
+export default function RequestCard({name, description, message, imageUrl, projectId, userId, status, refresh, price}) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(!open);
   const accept = {
     projectId,
     userId
   }
+  console.log(price);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -30,6 +31,7 @@ export default function RequestCard({name, description, message, imageUrl, proje
       )
       .then((res)=>{
         console.log(res.data);
+        refresh()
       })
     } catch (error) {
       console.log(error);
@@ -38,6 +40,8 @@ export default function RequestCard({name, description, message, imageUrl, proje
 
 
   return (
+    <>
+    {status === 'pending' &&
     <Card className="mt-6 w-96">
       <CardHeader color="blue-gray" className="relative h-56">
         <img
@@ -52,6 +56,9 @@ export default function RequestCard({name, description, message, imageUrl, proje
         </Typography>
         <Typography>
           {description}
+        </Typography>
+        <Typography>
+          You will earn: {price}$
         </Typography>
       </CardBody>
       <CardFooter className="pt-0">
@@ -119,5 +126,7 @@ export default function RequestCard({name, description, message, imageUrl, proje
         </Fragment>
       </CardFooter>
     </Card>
+    }
+    </>
   );
 }

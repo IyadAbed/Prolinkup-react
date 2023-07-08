@@ -48,16 +48,30 @@ const ChatComponent = () => {
   }, [selectedSpecialist]); // or set the selectedSpecialist as a dependancies /////////////////////////////////////////////////////////////////////
   useEffect(() => {
     if (selectedSpecialist) {
-      axios
-        .get(`http://localhost:5000/chatss/${user._id}/${selectedSpecialist.specialist._id}`)
-        .then((res) => {
-          if (res.data) {
-            setMessageSpecialist(res.data.messages);
-          }
-        })
-        .catch((e) => {
-          return e.message;
-        });
+      const fetchData = () => {
+        axios
+          .get(
+            `http://localhost:5000/chatss/${user._id}/${selectedSpecialist.specialist._id}`
+          )
+          .then((res) => {
+            if (res.data) {
+              setMessageSpecialist(res.data.messages);
+            }
+          })
+          .catch((e) => {
+            console.error(e.message);
+          });
+      };
+
+      fetchData(); // Initial fetch
+
+      const interval = setInterval(() => {
+        fetchData(); // Fetch data every 1 minute
+      }, 30000);
+
+      return () => {
+        clearInterval(interval); // Cleanup: clear the interval when the component unmounts or selectedSpecialist changes
+      };
     }
   }, [selectedSpecialist]); // or set the selectedSpecialist as a dependancies /////////////////////////////////////////////////////////////////////
 

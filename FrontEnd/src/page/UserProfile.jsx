@@ -129,7 +129,7 @@ export default function UserProfile() {
                 onClick={() => handleLinkClick("chat1")}
               >
                 <BiMessageRounded className="w-6 h-6" style={{ color: "black" }} />
-                <span className="flex-1 ml-3 whitespace-nowrap">Chat</span>
+                <span className="flex-1 ml-3 whitespace-nowrap">Project Todo</span>
                 <span className="inline-flex items-center justify-center px-2 ml-3 text-sm font-medium text-gray-800 bg-gray-200 rounded-full dark:bg-gray-700 dark:text-gray-300"></span>
               </a>
             </li>
