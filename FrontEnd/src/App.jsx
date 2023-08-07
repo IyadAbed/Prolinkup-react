@@ -11,7 +11,7 @@ import DreamCreation from "./component/DreamCreation";
 import Matching from "./component/Matching";
 import Dashboard from "./page/Dashboard";
 import UserProfile from "./page/UserProfile";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "./Context/AuthContext";
 import Page404 from "./page/page404";
 import Details from "./component/details";
@@ -20,11 +20,17 @@ import Payment from "./page/Payment";
 
 function App() {
   const { auth } = useContext(AuthContext);
+  const [nave, SetNave] = useState(true)
   const ScrollToTop = () => {
     const { pathname } = useLocation();
 
     useEffect(() => {
       window.scrollTo(0, 0);
+      if (pathname == "/profile") {
+        SetNave(false)
+      }else {
+        SetNave(true)
+      }
     }, [pathname]);
 
     return null;
@@ -35,7 +41,7 @@ function App() {
       <ScrollToTop />
         {auth ? (
           <>
-            <Nav />
+            {nave === true ? <Nav /> : null}
             <Routes>
               <Route index element={<Home />} />
               <Route path="Home" element={<Home />} />
@@ -54,7 +60,7 @@ function App() {
               <Route path="checkOut/:id" element={<Payment />} />
               <Route path="*" element={<Page404 />} />
             </Routes>
-            <Footer />
+            {nave === true ? <Footer /> : null}
           </>
         ) : (
           <>

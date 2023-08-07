@@ -21,7 +21,7 @@ export function Home() {
     <>
       <div className="relative flex h-screen content-center items-center justify-center pt-16 pb-32">
         <div className="absolute top-0 h-full w-full bg-[url('https://images.unsplash.com/photo-1557804506-669a67965ba0?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1267&q=80')] bg-cover bg-center" />
-        <div className="absolute top-0 h-full w-full bg-black/75 bg-cover bg-center" />
+        <div className="absolute top-0 h-full w-full bg-black/60 bg-cover bg-center" />
         <div className="max-w-8xl container relative mx-auto">
           <div className="flex flex-wrap items-center">
             <div className="ml-auto mr-auto w-full px-4 text-center lg:w-8/12">
@@ -56,7 +56,7 @@ export function Home() {
               />
             ))}
           </div>
-          <div className="mt-32 flex flex-wrap items-center">
+          {/* <div className="mt-32 flex flex-wrap items-center">
             <div className="mx-auto -mt-8 w-full px-4 md:w-5/12">
               <div className="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-full bg-white p-3 text-center shadow-lg">
                 <UsersIcon className="h-6 w-6 text-blue-gray-900" />
@@ -105,7 +105,7 @@ export function Home() {
                 </CardBody>
               </Card>
             </div>
-          </div>
+          </div> */}
         </div>
         <Howitwork />
         <Header />

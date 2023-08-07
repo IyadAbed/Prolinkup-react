@@ -5,15 +5,9 @@ import { AuthContext } from "../Context/AuthContext";
 import ProfileDrop from "./ProfileDrop";
 export default function Nav() {
   const { auth, setAuth } = useContext(AuthContext);
-  const handleLogOut = () => {
-    navigate("/");
-    setAuth(false);
-    localStorage.clear();
-  };
-  console.log(auth);
   return (
     <>
-      <div className="navbar bg-base-100 sticky top-0 z-50">
+      <div className="navbar bg-cyan-50 sticky top-0 z-50">
         <div className="navbar-start">
           <div className="dropdown">
             <label tabIndex={0} className="btn btn-ghost lg:hidden">

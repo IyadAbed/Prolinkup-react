@@ -1,6 +1,6 @@
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
-import { Card2, Card4, CardInfo } from "./cards";
+// import { Card2, Card4, CardInfo } from "./Cards";
 
 function Matching() {
   const responsive = {
@@ -26,7 +26,7 @@ function Matching() {
     <>
       <div>
         <h2 className="text-center my-8">Recomended For you</h2>
-      <Carousel responsive={responsive}>
+      {/* <Carousel responsive={responsive}>
         <Card2 />
         <Card2 />
         <Card2 />
@@ -34,12 +34,12 @@ function Matching() {
         <Card2 />
         <Card2 />
 
-      </Carousel>
+      </Carousel> */}
       </div>
-      <CardInfo />
+      {/* <CardInfo /> */}
       <div>
         <h2 className="text-center my-8">Recomended For you</h2>
-      <Carousel responsive={responsive}>
+      {/* <Carousel responsive={responsive}>
         <Card4 />
         <Card4 />
         <Card4 />
@@ -50,7 +50,7 @@ function Matching() {
         <Card4 />
 
 
-      </Carousel>
+      </Carousel> */}
       </div>
     </>
   );

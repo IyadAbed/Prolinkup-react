@@ -7,6 +7,7 @@ const port = process.env.PORT;
 const dbUrl = process.env.DBURL;
 const path = require("path");
 const chatRoutes = require('./Routes/chatRoutes');
+const aboutRouter = require('./Routes/aboutRoutes')
 
 const app = express();
 app.use(cors());
@@ -16,6 +17,7 @@ app.use("/public", express.static(path.join(__dirname, "public")));
 app.use(userRouts);
 app.use(projectRouter);
 app.use(chatRoutes);
+app.use(aboutRouter);
 
 
 module.exports = {

@@ -49,8 +49,8 @@ export default function Contact() {
   return (
     <>
       <>
-        <div className="container my-24 px-6 mx-auto">
-          <section className="mb-32 text-gray-800 text-center">
+        <div className="container px-6 mx-auto">
+          <section className=" text-gray-800 text-center">
             <style
               dangerouslySetInnerHTML={{
                 __html:
@@ -110,8 +110,8 @@ export default function Contact() {
                   </div>
                   <div className="md:mb-12 lg:mb-0">
                     <div className="map-container relative shadow-lg rounded-lg">
-                      <iframe
-                        src="https://maps.google.com/maps?q=manhatan&t=&z=13&ie=UTF8&iwloc=&output=embed"
+                      <img
+                        src="https://images.pexels.com/photos/3194519/pexels-photo-3194519.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
                         className="left-0 top-0 h-full w-full absolute rounded-lg"
                         frameBorder={0}
                         allowFullScreen=""
