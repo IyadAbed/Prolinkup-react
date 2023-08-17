@@ -12,9 +12,9 @@ const mongoose = require("mongoose");
 const productRouter = require('./routes/productRouter');
 const quoteRouter = require('./routes/quotesRouter');
 const aboutRouter = require('./routes/aboutRouter');
-const writerRouter = require('./routes/writerRouter');
+// const writerRouter = require('./routes/writerRouter');
 const authRoute = require('./routes/userRouter');
-const orderRoute = require('./routes/orderRouter')
+// const orderRoute = require('./routes/orderRouter')
 
 
 
@@ -23,7 +23,7 @@ const orderRoute = require('./routes/orderRouter')
 // app.use(errorHandler);
 // middlewear
 app.use( cors({
-  origin: ["http://localhost:5174"],
+  origin: ["http://localhost:5173"],
   methods: ["GET", "POST", "PUT", "DELETE" , "PATCH"],
   credentials: true,
 }));
@@ -36,9 +36,9 @@ app.use(express.json());
 app.use(productRouter);
 app.use(quoteRouter);
 app.use(aboutRouter);
-app.use(writerRouter);
+// app.use(writerRouter);
 app.use(authRoute);
-app.use(orderRoute);
+// app.use(orderRoute);
 
 
 

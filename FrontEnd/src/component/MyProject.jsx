@@ -6,9 +6,7 @@ import Project from "./Projects";
 
 function MyProject() {
   const { user, userRefresh, projectInfo } = useContext(UserContext);
-  
-
-
+  console.log(projectInfo);
   return (
     <>
       <div className="w-full sm:px-0">

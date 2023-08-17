@@ -29,7 +29,7 @@ module.exports = {
         password: password,
         skills,
         experience,
-        major
+        major,
       });
 
       const users = await User.findOne({ email });
@@ -61,7 +61,7 @@ module.exports = {
       const token = generateTokenLogin({
         email,
       });
-      res.json({ message: "Success Login user", Tok: token, pass:checkPass });
+      res.json({ message: "Success Login user", Tok: token, pass: checkPass });
     } catch (error) {
       console.error("failed in login", error);
     }
@@ -75,18 +75,18 @@ module.exports = {
 
   updateUser: async (req, res) => {
     try {
-      const {id} = req.params
+      const { id } = req.params;
       const name = req.body.name;
       const imagePath = req.file.path;
-      const imageUrl = `http://localhost:5000/${imagePath}`
-      const user = await User.findById(id)
+      const imageUrl = `http://localhost:5000/${imagePath}`;
+      const user = await User.findById(id);
 
       if (!user) {
         console.log("User not found");
         return;
       }
-      user.imageUrl = imageUrl || user.imageUrl
-      user.name = name || user.name
+      user.imageUrl = imageUrl || user.imageUrl;
+      user.name = name || user.name;
       const updatedUser = await user.save();
       res.json(updatedUser);
     } catch (error) {
@@ -98,28 +98,41 @@ module.exports = {
     try {
       if (!req?.user)
         return res.status(400).json({ message: "User is UnAuthorized" });
-  
+
       const user = await User.findOne({ email: req.user.email })
         .populate({
-          path: 'projects.project',
-          model: 'Project'
+          path: "projects.project",
+          model: "Project",
         })
         .populate({
-          path: 'projectTodo.project',
-          model: 'Project'
+          path: "projectTodo.project",
+          model: "Project",
         })
         .exec();
-  
+
       if (!user) {
         return res
           .status(204)
           .json({ message: `User Email ${req.user.email} not found` });
       }
-  
+
       res.json(user);
     } catch (error) {
       console.error("Failed to get user", error);
       res.status(500).json({ message: "Failed to get user" });
     }
-  }
-}  
+  },
+  addReport: async (req, res) => {
+    try {
+      const { reporter, reason, reportOn } = req.body;
+      const report = {reporter, reason}
+      const users = await User.findByIdAndUpdate(reportOn, {report})
+      if (!users) {
+        return res.json({ error: "this user is not found" });
+      }
+      res.json({message: "Success Reporting"})
+    } catch (error) {
+      console.error("error add new Report", error);
+    }
+  },
+};

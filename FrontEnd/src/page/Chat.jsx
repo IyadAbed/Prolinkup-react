@@ -179,6 +179,7 @@ const ChatComponent = () => {
               messages={chatMessages}
               otherMessage={messageSpecialist}
               onSendMessage={handleSendMessage}
+              user={user}
             />
           </div>
         ) : (

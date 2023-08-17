@@ -76,6 +76,15 @@ const userSchema = new mongoose.Schema(
     endPrice:{
       type: Number
     },
+    report:[{
+      reporter:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+      reason:{
+        type: String
+      }
+    }],
     createdAt: {
       type: Date,
       default: Date.now,

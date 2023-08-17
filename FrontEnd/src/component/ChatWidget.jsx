@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 
-const ChatWidget = ({ messages, onSendMessage, otherMessage }) => {
+const ChatWidget = ({ messages, onSendMessage, otherMessage, user }) => {
   const [inputMessage, setInputMessage] = useState('');
 
   const handleInputChange = (e) => {
@@ -16,44 +15,54 @@ const ChatWidget = ({ messages, onSendMessage, otherMessage }) => {
     }
   };
 
+  // Combine and sort messages
+  const combinedMessages = [...messages, ...otherMessage];
+  combinedMessages.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+
   return (
-    <div className="border border-gray-300 rounded p-4 h-80">
+    <div className="border border-gray-300 rounded p-4 h-80 bg-gray-200">
       <div className="overflow-y-auto h-full">
-        {Array.isArray(messages) && messages.length > 0 ? (
-          messages.map((message, index) => (
-            <div key={index} className="mb-2">
-              <p className="font-semibold">{message.sender.name}</p>
-              <p className="text-gray-600">{message.content}</p>
+        {combinedMessages.length > 0 ? (
+          combinedMessages.map((message, index) => (
+            <div
+              key={index}
+              className={`chat ${message.sender.name !== user.name ? 'chat-end' : 'chat-start'}`}
+            >
+              <div className="chat-image avatar">
+                <div className="w-10 rounded-full">
+                  <img src={`${message.sender.name !== user.name ? `${message.sender.imageUrl ? `${message.sender.imageUrl}`:`https://t3.ftcdn.net/jpg/03/46/83/96/360_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg`}` : `${user.imageUrl ? `${user.imageUrl}` : `https://t3.ftcdn.net/jpg/03/46/83/96/360_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg`}`}`} alt='hello' />
+                </div>
+              </div>
+              <div className="chat-header">
+                {message.sender.name}
+                <time className="text-xs opacity-50">
+                  {new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                </time>
+              </div>
+              <div className="chat-bubble">{message.content}</div>
             </div>
           ))
         ) : (
           <p>No messages yet.</p>
         )}
-        {Array.isArray(otherMessage) && otherMessage.length > 0 ? (
-          otherMessage.map((message, index) => (
-            <div key={index} className="mb-2">
-              <p className="font-semibold text-right">{message.sender.name}</p>
-              <p className="text-gray-600 text-right">{message.content}</p>
-            </div>
-          ))
-        ) : (
-          <p className=' text-right'>No messages yet.</p>
-        )}
       </div>
-      <form className="mt-4" onSubmit={handleFormSubmit}>
+      
+      <form className="mt-4 " onSubmit={handleFormSubmit}>
+        <div className='flex '>
         <input
           type="text"
           value={inputMessage}
           onChange={handleInputChange}
-          className="border border-gray-300 rounded p-2 w-full"
+          className="border border-gray-300 rounded-full flex flex-row mt-10 w-11/12"
           placeholder="Type a message..."
         />
         <button
           type="submit"
-          className="mt-2 bg-blue-500 text-white rounded px-4 py-2 hover:bg-blue-600"
+          className="mt-10 bg-blue-500 text-white text-sm rounded-full  px-6 ml-1 hover:bg-blue-600"
         >
           Send
         </button>
+        </div>
       </form>
     </div>
   );

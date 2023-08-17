@@ -1,13 +1,13 @@
-const express = require("express");
-const router = express.Router();
-const writerController = require("../controllers/writerController");
+// const express = require("express");
+// const router = express.Router();
+// const writerController = require("../controllers/writerController");
 
-// add new product
-router.post("/addwriter", writerController.addWriter);
+// // add new product
+// router.post("/addwriter", writerController.addWriter);
 
-// update product
-router.patch("/updatewriter/:id", writerController.updateWriter);
+// // update product
+// router.patch("/updatewriter/:id", writerController.updateWriter);
 
-// get all products
-router.get("/showwriters", writerController.showWriters);
-module.exports = router;
+// // get all products
+// router.get("/showwriters", writerController.showWriters);
+// module.exports = router;

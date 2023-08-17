@@ -76,7 +76,7 @@ export default function UserProfile() {
             to="/"
             className="self-center text-2xl font-semibold whitespace-nowrap"
           >
-            🐐 PLU
+            PLU
           </Link>
           <br />
           <br />

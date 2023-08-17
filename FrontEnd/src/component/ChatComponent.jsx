@@ -38,21 +38,17 @@ const ChatComponent1 = () => {
   // Fetch chat messages for the selected project
   useEffect(() => {
     if (selectedProject) {
-      console.log('fffff');
       const ow = (selectedProject.owner);
       const us = (user._id);
       axios
         .get(`http://localhost:5000/chatss/${ow}/${us}`)
         .then((res) => {
-          console.log('fffff');
           if (res.data) {
-            console.log('ffffffffffffff');
             console.log("form",res.data);
             setChatMessages(res.data.messages);
             setRefresh(!refresh)
           }
           console.log("form",res.data);
-          console.log('fffff');
         })
         .catch((e) => {
           return console.log(e.message);;
@@ -150,6 +146,7 @@ const ChatComponent1 = () => {
               messages={chatMessages}
               onSendMessage={handleSendMessage}
               otherMessage={messageSpecialist}
+              user={user}
             />
           </div>
         ) : (

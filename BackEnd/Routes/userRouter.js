@@ -8,7 +8,7 @@ const upload = require("../Middleware/handleimage");
 router.get("/users", userController.allUsers);
 router.get("/getUser", verifyUser, userController.getUser);
 router.post("/addUser", userController.addUser);
-
+router.post("/addReport", userController.addReport);
 router.post("/log", userController.login);
 router.put("/updateUser/:id", upload.single("image"), userController.updateUser);
 
