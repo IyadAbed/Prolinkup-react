@@ -14,16 +14,15 @@ import UserProfile from "./page/UserProfile";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "./Context/AuthContext";
 import Page404 from "./page/page404";
-import Details from "./component/details";
-import ChatComponent from "./page/Chat";
 import Payment from "./page/Payment";
-
+import Details from "./component/Details";
+import ForgotPassword from "./component/ForgotPassword";
+import ResetPassword from "./component/ResetPassword";
 function App() {
   const { auth } = useContext(AuthContext);
   const [nave, SetNave] = useState(true)
   const ScrollToTop = () => {
     const { pathname } = useLocation();
-
     useEffect(() => {
       window.scrollTo(0, 0);
       if (pathname == "/profile") {
@@ -32,7 +31,6 @@ function App() {
         SetNave(true)
       }
     }, [pathname]);
-
     return null;
   };
   return (
@@ -78,6 +76,8 @@ function App() {
               </Route>
               <Route path="Signup" element={<Signup />} />
               <Route path="Signin" element={<Signin />} />
+              <Route path="forgot-password" element={<ForgotPassword />}></Route>
+              <Route path="reset_password/:id/:token" element={<ResetPassword />} />
               <Route path="Dashboard" element={<Page404 />} />
               <Route path="profile" element={<Page404 />} />
               <Route path="*" element={<Page404 />} />

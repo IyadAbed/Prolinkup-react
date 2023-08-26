@@ -21,10 +21,6 @@ export default function Profileadd() {
 
   const [file, setFile] = useState(null);
   const [skills, setSkills] = useState([]);
-  const newSkills = skills.map((item)=>{
-    return item.value
-  })
- // Extract selected skill values
 
   
   const [newProject, setNewProject] = useState({

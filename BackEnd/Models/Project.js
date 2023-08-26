@@ -12,6 +12,7 @@ const projectSchema = new mongoose.Schema({
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
+    required: true
   },
   skillsNeeded: {
     type: [], 
@@ -45,6 +46,11 @@ const projectSchema = new mongoose.Schema({
       type:Boolean,
       default: false
     }
+  },
+  status: {
+    type: String,
+    enum: ['pending', 'started', 'finished'],
+    default: 'pending',
   },
   createdAt: {
     type: Date,

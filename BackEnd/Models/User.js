@@ -21,15 +21,15 @@ const userSchema = new mongoose.Schema(
     },
     major: {
       type: [String],
-      required: true,
+      // required: true,
     },
     skills: {
       type: [String],
-      required: true,
+      // required: true,
     },
     experience: {
       type: Number,
-      required: true,
+      // required: true,
     },
     availability: {
       type: Boolean,
@@ -97,8 +97,8 @@ const userSchema = new mongoose.Schema(
   { timestamp: true }
 );
 
-userSchema.pre("save", async function () {
-  this.password = await bcrypt.hash(this.password, 10);
-});
+// userSchema.pre("save", async function () {
+//   this.password = await bcrypt.hash(this.password, 10);
+// });
 
 module.exports = mongoose.model("User", userSchema);

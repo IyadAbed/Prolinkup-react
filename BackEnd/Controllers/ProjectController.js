@@ -41,7 +41,7 @@ const User = require("../Models/User");
 exports.createProject = async (req, res) => {
   try {
     const { name, description, owner, skillsNeeded } = req.body;
-    const imagePath = req.file.path;
+    const imagePath = req.file?.path;
     const imageUrl = `http://localhost:5000/${imagePath}`;
 
     // Create a new project instance
@@ -58,7 +58,7 @@ exports.createProject = async (req, res) => {
 
     // Find the owner by ID
     const user = await User.findById(owner);
-
+    
     if (!user) {
       return res.status(404).json({ message: "Owner not found" });
     }

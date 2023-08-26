@@ -117,7 +117,10 @@ export default function UserProfile() {
                 className="flex items-center p-2 rounded-lg hover:bg-[#cbefff] -100 hover:text-black dark:hover:bg-black-700"
                 onClick={() => handleLinkClick("chat")}
               >
-                <BiMessageRounded className="w-6 h-6" style={{ color: "black" }} />
+                <BiMessageRounded
+                  className="w-6 h-6"
+                  style={{ color: "black" }}
+                />
                 <span className="flex-1 ml-3 whitespace-nowrap">Chat</span>
                 <span className="inline-flex items-center justify-center px-2 ml-3 text-sm font-medium text-gray-800 bg-gray-200 rounded-full dark:bg-gray-700 dark:text-gray-300"></span>
               </a>
@@ -128,8 +131,13 @@ export default function UserProfile() {
                 className="flex items-center p-2 rounded-lg hover:bg-[#cbefff] -100 hover:text-black dark:hover:bg-black-700"
                 onClick={() => handleLinkClick("chat1")}
               >
-                <BiMessageRounded className="w-6 h-6" style={{ color: "black" }} />
-                <span className="flex-1 ml-3 whitespace-nowrap">Project Todo</span>
+                <BiMessageRounded
+                  className="w-6 h-6"
+                  style={{ color: "black" }}
+                />
+                <span className="flex-1 ml-3 whitespace-nowrap">
+                  Project Todo
+                </span>
                 <span className="inline-flex items-center justify-center px-2 ml-3 text-sm font-medium text-gray-800 bg-gray-200 rounded-full dark:bg-gray-700 dark:text-gray-300"></span>
               </a>
             </li>
@@ -139,10 +147,7 @@ export default function UserProfile() {
                   className="flex items-center p-2 rounded-lg hover:bg-[#cbefff] -100 hover:text-black dark:hover:bg-black-700"
                   onClick={() => handleLinkClick("request")}
                 >
-                  <BiGitMerge
-                    className="w-7 h-7"
-                    style={{ color: "black" }}
-                  />
+                  <BiGitMerge className="w-7 h-7" style={{ color: "black" }} />
                   <span className="ml-3">Request</span>
                 </a>
               </li>

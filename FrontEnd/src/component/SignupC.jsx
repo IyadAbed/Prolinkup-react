@@ -6,10 +6,11 @@ import Select from "react-select";
 import axios from "axios";
 import skillsData from "./skillsData";
 export default function SignupC() {
-
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [errors, setErrors] = useState({});
   const [serverError, setServerError] = useState();
+  const newPro = localStorage.getItem("newProject");
+  console.log(newPro);
   // console.log(serverError);
 
   const validateForm = () => {
@@ -51,16 +52,14 @@ export default function SignupC() {
     setMajor(event.target.value);
   };
 
-  const [skills, setSkills] = useState([])
-  const newSkills = skills.map((skill)=>{
-    return skill.value
-  })
-  console.log(newSkills);
-  const options = skillsData.map(skill => ({
+  const [skills, setSkills] = useState([]);
+  const newSkills = skills.map((skill) => {
+    return skill.value;
+  });
+  const options = skillsData.map((skill) => ({
     value: skill.value,
-    label: skill.label
+    label: skill.label,
   }));
-
 
   const [newUser, setNewUser] = useState({
     name: "",
@@ -88,17 +87,48 @@ export default function SignupC() {
         email: newUser.email,
         experience: newUser.experience,
         skills: newSkills,
-        major:major
+        major: major,
       };
       const res = await axios.post("http://localhost:5000/addUser", userData);
       if (res.data.error == "this email is already exists") {
         setServerError(res.data.error);
-      } else {
+      } else if (newPro) {
         localStorage.setItem("token", res.data.Tok);
         setAuth(true);
         userRefresh();
         refresh();
-        navigate("/home")
+        async function newProj() {
+          try {
+            const newProject = JSON.parse(localStorage.getItem("newProject"));
+            const userId = localStorage.getItem("userId");
+            const data = {
+              owner: userId,
+              name: newProject.name,
+              description: newProject.description,
+              skillsNeeded: newProject.skillsNeeded,
+              image: null,
+            };
+            const response = await axios.post(
+              "http://localhost:5000/createProject",
+              data
+            );
+            const { projectId } = response.data;
+            console.log("Project ID:", projectId);
+            userRefresh();
+            navigate(`/details/${projectId}`);
+          } catch (error) {
+            console.log(error);
+          }
+        }
+        setTimeout(() => {
+          newProj();
+        }, 1000);
+      } else {
+        navigate("/home");
+        localStorage.setItem("token", res.data.Tok);
+        setAuth(true);
+        userRefresh();
+        refresh();
       }
     } else {
       setErrors(errors);
@@ -172,44 +202,41 @@ export default function SignupC() {
         </div>
         {/* /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */}
         <div>
-              <label
-                className="text-black dark:text-gray-200"
-                htmlFor="emailAddress"
-              >
-                Major
-              </label>
-              <select
-                onChange={handleMajorChange}
-                value={major}
-                id="fieldType"
-                className="block w-full px-4 py-2 mt-2 text-black bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-[#70ACC7] dark:focus:border-[#70ACC7] focus:outline-none focus:ring-[#70ACC7]"
-              >
-                <option value="">Select Size</option>
-                <option value="Web development">Web development</option>
-                <option value="Cloud">Cloud</option>
-                <option value="AI">AI</option>
-              </select>
-            </div>
+          <label
+            className="text-black dark:text-gray-200"
+            htmlFor="emailAddress"
+          >
+            Major
+          </label>
+          <select
+            onChange={handleMajorChange}
+            value={major}
+            id="fieldType"
+            className="block w-full px-4 py-2 mt-2 text-black bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-[#70ACC7] dark:focus:border-[#70ACC7] focus:outline-none focus:ring-[#70ACC7]"
+          >
+            <option value="">Select Size</option>
+            <option value="Web development">Web development</option>
+            <option value="Cloud">Cloud</option>
+            <option value="AI">AI</option>
+          </select>
+        </div>
         <div>
-              <label
-                className="text-black dark:text-gray-200"
-                htmlFor="fieldType"
-              >
-                Skill's needed:
-              </label>
-              <br />
-              <Select
-                onChange={(e) => {
-                  setSkills(e);
-                }}
-                defaultValue={[options[0], options[3]]}
-                isMulti
-                name="skills"
-                options={options}
-                className="basic-multi-select"
-                classNamePrefix="select"
-              />
-            </div>
+          <label className="text-black dark:text-gray-200" htmlFor="fieldType">
+            Skill's needed:
+          </label>
+          <br />
+          <Select
+            onChange={(e) => {
+              setSkills(e);
+            }}
+            defaultValue={[options[0], options[3]]}
+            isMulti
+            name="skills"
+            options={options}
+            className="basic-multi-select"
+            classNamePrefix="select"
+          />
+        </div>
         {/* /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */}
 
         <Link
