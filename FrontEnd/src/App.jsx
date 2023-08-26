@@ -45,11 +45,11 @@ function App() {
               <Route path="Home" element={<Home />} />
               <Route path="About" element={<About />} />
               <Route path="Contact" element={<Contact />} />
-              <Route path="StartDream" element={<StartDream />}>
-                <Route index element={<DreamCreation />} />
+              <Route path="StartDream" element={<DreamCreation />}/>
+                {/* <Route index element={<DreamCreation />} />
                 <Route path="DreamCreation" element={<DreamCreation />} />
                 <Route path="Matching" element={<Matching />} />
-              </Route>
+              </Route> */}
               <Route path="Signup" element={<Page404 />} />
               <Route path="Signin" element={<Page404 />} />
               <Route path="Dashboard" element={<Dashboard />} />

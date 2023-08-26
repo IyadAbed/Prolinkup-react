@@ -41,6 +41,9 @@ export default function Nav() {
               <li>
                 <Link to="/Contact">Contact</Link>
               </li>
+              <li>
+                <Link to="/StartDream">Start A Dream</Link>
+              </li>
             </ul>
           </div>
           <Link to="/Home" className=" normal-case text-xl">
@@ -58,17 +61,19 @@ export default function Nav() {
             <li>
               <Link to="/Contact">Contact</Link>
             </li>
+            <li>
+              <Link to="/StartDream">Start A Dream</Link>
+            </li>
           </ul>
         </div>
         <div className="navbar-end">
           {auth === true ? (
             <ProfileDrop />
-          ):(
+          ) : (
             <Link to="/Signup" className="btn">
-            Get started
-          </Link>
-          )
-          }
+              Get started
+            </Link>
+          )}
         </div>
       </div>
     </>
