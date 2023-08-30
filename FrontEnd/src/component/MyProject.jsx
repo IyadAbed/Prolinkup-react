@@ -14,11 +14,6 @@ function MyProject() {
             <p className="text-base sm:text-lg md:text-xl lg:text-2xl font-bold leading-normal text-gray-800">
               Projects
             </p>
-            <div>
-              <Button className="bg-[#70ACC7] hover:bg-[#cbefff] -100 hover:text-black">
-                <span>New Project</span>
-              </Button>
-            </div>
           </div>
           <div className="bg-white shadow px-4 md:px-10 pt-4 md:pt-7 pb-5 lg-max:overflow-y-auto">
             <table className="w-full whitespace-nowrap">

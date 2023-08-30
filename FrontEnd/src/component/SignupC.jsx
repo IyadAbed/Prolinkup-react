@@ -10,7 +10,6 @@ export default function SignupC() {
   const [errors, setErrors] = useState({});
   const [serverError, setServerError] = useState();
   const newPro = localStorage.getItem("newProject");
-  console.log(newPro);
   // console.log(serverError);
 
   const validateForm = () => {
@@ -274,11 +273,6 @@ export default function SignupC() {
             </div>
           </div>
         )}
-        <p className="text-center">Or sign up with :</p>
-        <div className="flex space-x-1">
-          <button className="btn btn-outline w-1/2">Facebook</button>
-          <button className="btn btn-outline w-1/2">Google</button>
-        </div>
       </form>
     </>
   );

@@ -21,7 +21,8 @@ export default function Profilehome() {
   const [skills, setSkills] = useState([]);
   const [newUser, setNewUser] = useState({
     name: "",
-    skills: []
+    skills: [],
+    major: ""
   });
   const options = skillsData.map(skill => ({
     value: skill.value,
@@ -48,6 +49,7 @@ export default function Profilehome() {
     const formData = new FormData();
     formData.append("image", file);
     formData.append("name", newUser.name);
+    formData.append("major", newUser.major);
     newUser.skills.forEach((skill) => {
       formData.append("skills[]", skill); // Append each skill as a separate field
     })
@@ -167,6 +169,20 @@ export default function Profilehome() {
                         <section className="max-w-4xl p-6 mx-auto bg-white rounded-md shadow-md dark:bg-gray-800 mt-20">
                           <form onSubmit={handleSubmit} className="text-black">
                             <div className="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
+                              <div>
+                                <label
+                                  className="text-black dark:text-gray-200"
+                                  htmlFor="username"
+                                >
+                                  Major
+                                </label>
+                                <input
+                                  name="major"
+                                  onChange={handleChange}
+                                  id="username"
+                                  className="block w-full px-4 py-2 mt-2 text-black bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
+                                />
+                              </div>
                               <div>
                                 <label
                                   className="text-black dark:text-gray-200"

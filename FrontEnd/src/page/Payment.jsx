@@ -95,29 +95,27 @@ function Payment() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("hhhhhhhhhhhhhhh")
+    console.log("hhhhhhhhhhhhhhh");
 
-    
-    
-    
     // const elements = [...formRef.current.elements];
     const errors = validateForm();
-    console.log(errors)
+    console.log(errors);
     if (Object.keys(errors).length === 0) {
-      axios.put(`http://localhost:5000/payment/${id}`)
-      .then((response) => {
-        console.log(response.data);
-        // navigate("/thankYou");
-      })
-      .catch((error) => {
-        console.error(error, "error in save the order");
-      });
+      axios
+        .put(`http://localhost:5000/payment/${id}`)
+        .then((response) => {
+          console.log(response.data);
+          // navigate("/thankYou");
+        })
+        .catch((error) => {
+          console.error(error, "error in save the order");
+        });
       Swal.fire(
         "Order completed!",
         "You can view your orders in your profile!",
         "success"
-        );
-        navigate(`/details/${id}`);
+      );
+      navigate(`/details/${id}`);
     } else {
       setValidationErrors(errors);
     }
@@ -179,15 +177,10 @@ function Payment() {
           onSubmit={handleSubmit}
         >
           <>
-            <h4 className="mb-3 mt-1">Payment Info</h4>
             {/*---------------------------------- Credit Card --------------------------------------------- */}
 
             <div key="Payment">
               <div className="App-payment">
-                <h1>React Credit Cards</h1>
-                <h4 className="mb-5">
-                  Beautiful credit cards for your payment forms
-                </h4>
                 <Card
                   number={number}
                   name={name}
@@ -278,14 +271,16 @@ function Payment() {
 
                 {/* <button class="btn col-4 btn-dark submitbtn btn-lg btn-block" type="submit">Continue to checkout</button> */}
 
-                <div className="flex justify-center my-9">
-                  <button className="checkoutbtn2 " type="submit">
+                <div className="flex justify-center my-9 ">
+                  <button className="checkoutbtn2 bg-black" type="submit">
                     <span className="circle1" />
                     <span className="circle2" />
                     <span className="circle3" />
                     <span className="circle4" />
                     <span className="circle5" />
-                    <span className="text" role="submit">Submit</span>
+                    <span className="text " role="submit">
+                      Submit
+                    </span>
                   </button>
                 </div>
               </div>

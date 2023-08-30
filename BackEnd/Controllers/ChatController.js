@@ -9,9 +9,6 @@ exports.getChatByRecipient = async (req, res) => {
     })
       .populate("messages.sender")
       .exec();
-    // if (!chat) {
-    //   return res.status(404).json({ message: 'Chat not found' });
-    // }
 
     res.status(200).json(chat);
   } catch (error) {

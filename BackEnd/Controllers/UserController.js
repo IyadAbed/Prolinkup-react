@@ -112,7 +112,8 @@ newUserGoogle : async (req, res) => {
       name: name,
       email: email,
       password: hashId,
-      imageUrl: picture
+      imageUrl: picture,
+      major: "Web Develobment"
     });
     const user = await NewUser.save();
     const token = generateToken({firstName: user.name, email: user.email})
@@ -136,7 +137,6 @@ newUserGoogle : async (req, res) => {
 resetpassword : (req, res) => {
   const {id, token} = req.params
   const {password} = req.body
-
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
       if(err) {
           return res.json({Status: "Error with token"})
@@ -160,7 +160,7 @@ resetpassword : (req, res) => {
   updateUser: async (req, res) => {
     try {
       const { id } = req.params;
-      const {name, skills} = req.body;
+      const {name, skills, major} = req.body;
       const imagePath = req.file?.path;
       const imageUrl = `http://localhost:5000/${imagePath}`;
       const user = await User.findById(id);
@@ -172,6 +172,7 @@ resetpassword : (req, res) => {
         user.imageUrl = imageUrl || user.imageUrl;
       }
       user.name = name || user.name;
+      user.major = major || user.major;
       if(skills){
         user.skills = skills
       }
@@ -186,7 +187,6 @@ resetpassword : (req, res) => {
     try {
       if (!req?.user)
         return res.status(401).json({ message: "User is UnAuthorized" });
-
       const user = await User.findOne({ email: req.user.email })
         .populate({
           path: "projects.project",
@@ -197,7 +197,6 @@ resetpassword : (req, res) => {
           model: "Project",
         })
         .exec();
-
       if (!user) {
         return res
           .status(204)
