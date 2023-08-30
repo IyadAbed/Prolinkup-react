@@ -45,105 +45,144 @@ exports.createProject = async (req, res) => {
     const imageUrl = `http://localhost:5000/${imagePath}`;
 
     // Create a new project instance
-    const project = new Project({
-      name,
-      description,
-      owner,
-      imageUrl,
-      skillsNeeded,
-    });
+    if (imagePath) {
+      const project = new Project({
+        name,
+        description,
+        owner,
+        imageUrl,
+        skillsNeeded,
+      });
 
-    // Save the project to the database
-    await project.save();
+      // Save the project to the database
+      await project.save();
 
-    // Find the owner by ID
-    const user = await User.findById(owner);
-    
-    if (!user) {
-      return res.status(404).json({ message: "Owner not found" });
+      // Find the owner by ID
+      const user = await User.findById(owner);
+
+      if (!user) {
+        return res.status(404).json({ message: "Owner not found" });
+      }
+
+      // Add the project ID to the owner's projects array
+      user.projects.push({ project: project._id });
+
+      // Save the updated user
+      await user.save();
+
+      // Find the matching users based on their skills
+
+      res.status(201).json({
+        projectId: project._id,
+        message: "Project created successfully",
+      });
+    } else {
+      const project = new Project({
+        name,
+        description,
+        owner,
+        skillsNeeded,
+      });
+
+      // Save the project to the database
+      await project.save();
+
+      // Find the owner by ID
+      const user = await User.findById(owner);
+
+      if (!user) {
+        return res.status(404).json({ message: "Owner not found" });
+      }
+
+      // Add the project ID to the owner's projects array
+      user.projects.push({ project: project._id });
+
+      // Save the updated user
+      await user.save();
+
+      // Find the matching users based on their skills
+
+      res.status(201).json({
+        projectId: project._id,
+        message: "Project created successfully",
+      });
     }
-
-    // Add the project ID to the owner's projects array
-    user.projects.push({project: project._id});
-
-    // Save the updated user
-    await user.save();
-
-    // Find the matching users based on their skills
-
-    res.status(201).json({
-      projectId: project._id,
-      message: "Project created successfully",
-    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Error adding new project" });
   }
 };
 
-
 // Controller action for fetching a project by ID
 exports.getProjectById = async (req, res) => {
   try {
     const { owner } = req.params;
     // Find the project by ID and populate the 'specialists' field with their details
-    const project = await Project.find({ owner })
-      .populate('specialists.specialist')
+    const project = await Project.find({ owner, status: "pending" })
+      .populate("specialists.specialist")
       .exec();
 
     if (!project) {
-      return res.status(404).json({ message: 'Project not found' });
+      return res.status(404).json({ message: "Projects not found" });
     }
 
     res.status(200).json(project);
   } catch (error) {
-    res.status(500).json({ message: 'Internal server error' });
+    res.status(500).json({ message: "Internal server error" });
   }
 };
 
+exports.projectsFinished = async (req, res) => {
+  try {
+    const { owner } = req.params;
+    // Find the project by ID and populate the 'specialists' field with their details
+    const project = await Project.find({ owner, status: "finished" })
+      .populate("specialists.specialist")
+      .exec();
+
+    if (!project) {
+      return res.status(404).json({ message: "Projects not found" });
+    }
+
+    res.status(200).json(project);
+  } catch (error) {
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
 
 exports.getProjectByIdOfProject = async (req, res) => {
   try {
     const { id } = req.params;
     // Find the project by ID
-    const projects = await Project.findById(id);
+    const projects = await Project.findById(id).populate("specialists.specialist")
     if (!projects) {
       return res.status(500).json({ message: "Project not found" });
     }
 
-    const skillsNeeded = projects.skillsNeeded
+    const skillsNeeded = projects.skillsNeeded;
 
     const matchingUsers = await User.find({
       skills: { $in: skillsNeeded },
       _id: { $ne: projects.owner },
+      "projectTodo.project": { $ne: id },
     }).sort({ skills: -1 });
 
-    // const ultimateUser = matchingUsers.filter((Element)=>{
-    //   Element.projectTodo.map(({project})=>{
-    //     if (project._id !== projects.owner) {
-    //       return false
-    //     }
-    //     return project
-    //   })
-    // })
-
-    res.status(200).json({projects, matchingUsers});
+    res.status(200).json({ projects, matchingUsers });
   } catch (error) {
     res.status(500).json({ message: "Error in finding the project" });
   }
 };
 
-
 exports.payment = async (req, res) => {
   try {
     const { id } = req.params;
-    const price = req.body.price
+    const price = req.body.price;
     // Find the project by ID
     const project = await Project.findByIdAndUpdate(id, {
-      payment:{
+      payment: {
         price,
-        isPaid: true
-      }
+        isPaid: true,
+      },
     });
     if (!project) {
       return res.status(500).json({ message: "Project not found" });
@@ -181,7 +220,7 @@ exports.updateProjectById = async (req, res) => {
 exports.sendRequest = async (req, res) => {
   try {
     const { userId } = req.params;
-    const { projectId, message, price} = req.body;
+    const { projectId, message, price } = req.body;
 
     // Find the user by ID
     const user = await User.findById(userId);
@@ -196,10 +235,10 @@ exports.sendRequest = async (req, res) => {
       return res.status(404).json({ message: "Project not found" });
     }
 
-    // const addSpecialistToProject = {
-    //   specialist: userId,
-    //   status: "pending",
-    // };
+    project.specialists.push({
+      specialist: userId,
+      status: "pending",
+    });
 
     // Create the project object with default status 'pending'
     const projectObj = {
@@ -207,9 +246,9 @@ exports.sendRequest = async (req, res) => {
       status: "pending",
       messages: {
         specialist: user._id,
-        message:message
+        message: message,
       },
-      price
+      price,
     };
 
     // project.specialists.push(addSpecialistToProject);
@@ -266,10 +305,10 @@ exports.acceptRequest = async (req, res) => {
     }
 
     // Find the specialist object in the project's specialists array
-    project.specialists.push({
+    project.specialists = {
       specialist: userId,
-      status: 'accepted'
-    })
+      status: "accepted",
+    };
 
     // Save the updated project
     await project.save();
@@ -352,7 +391,7 @@ exports.cancelRequest = async (req, res) => {
     }
 
     // Update the projectTodo's status to 'cancelled'
-    projectTodo.status = "cancelled";
+    user.projectTodo.pull(projectTodo);
 
     // Save the updated user
     await user.save();
@@ -397,18 +436,47 @@ exports.deleteProject = async (req, res) => {
   }
 };
 
+exports.startProject = async (req, res) => {
+  try {
+    const project = await Project.findByIdAndUpdate(
+      req.params.id,
+      { status: "started" },
+      { new: true }
+    );
+    res.json(project);
+  } catch (error) {
+    res.status(500).json({ message: "Error starting project" });
+  }
+};
+
+// End Project
+exports.endProject = async (req, res) => {
+  try {
+    const project = await Project.findByIdAndUpdate(
+      req.params.id,
+      { status: "finished" },
+      { new: true }
+    );
+    res.json(project);
+  } catch (error) {
+    res.status(500).json({ message: "Error ending project" });
+  }
+};
+
 exports.getAllProjectTodo = async (req, res) => {
   try {
     const { userId } = req.params;
-    const user = await User.findById(userId).populate('projectTodo.project').exec();
+    const user = await User.findById(userId)
+      .populate("projectTodo.project")
+      .exec();
 
     if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+      return res.status(404).json({ message: "User not found" });
     }
 
     const projectTodo = user.projectTodo;
     res.status(200).json(projectTodo);
   } catch (error) {
-    res.status(500).json({ message: 'Internal server error' });
+    res.status(500).json({ message: "Internal server error" });
   }
 };

@@ -26,7 +26,6 @@ const ChatComponent = () => {
 
   // Fetch chat messages for the selected specialist
   useEffect(() => {
-      console.log(chatMessages);
     if (selectedSpecialist) {
       console.log(selectedSpecialist);
       axios

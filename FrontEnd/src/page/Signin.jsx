@@ -12,6 +12,7 @@ const api = import.meta.env.VITE_Api
 function Signin() {
   let { auth, setAuth, refresh } = useContext(AuthContext);
   let { user, setUser, userRefresh } = useContext(UserContext);
+  const navigate = useNavigate();
   const login = useGoogleLogin({
     onSuccess: (codeResponse) => {
       // setUserGoogle(codeResponse)
@@ -41,6 +42,7 @@ function Signin() {
               );
               if(newUserResponse.data.Tok){
                 localStorage.setItem("token", newUserResponse.data.Tok );
+                refresh()
                 userRefresh()
                 window.location.href = `${ReactApi}/`;
               }else{
@@ -100,7 +102,6 @@ function Signin() {
         //   user_type: "customer",
         // };
         const res = await axios.post("http://localhost:5000/log", userInfo);
-        console.log(res.data);
         if (res.data.error == "email not found") {
           setServerDataErrors({
             ...serverDataErrors,

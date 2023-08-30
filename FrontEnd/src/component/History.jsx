@@ -1,13 +1,32 @@
-import { Button } from "@material-tailwind/react";
-import React, { useContext } from "react";
-import { UserContext } from "../Context/UserContext";
+import { useContext, useEffect, useState } from 'react';
+import { UserContext } from '../Context/UserContext';
+import { Button } from '@material-tailwind/react';
+import axios from 'axios';
 import Project from "./Projects";
 
-function MyProject() {
-  const { user, userRefresh, projectInfo } = useContext(UserContext);
 
+function History () {
+  const { user } = useContext(UserContext);
+  const [projectInfo, setProjectInfo] = useState([])
+  useEffect(() => {
+    axios
+      .get(`http://localhost:5000/projectsFinished/${user?._id}`)
+      .then((res) => {
+        if (res.data) {
+          console.log(res.data);
+          setProjectInfo(res.data);
+        }
+      })
+      .catch((e) => {
+        return e.message;
+      });
+  }, [user._id, user.projects]);
   return (
     <>
+      <h1 className=" text-4xl text-center text-black">My Project's</h1>
+      <br />
+      <hr />
+      <br />
       <div className="w-full sm:px-0">
         <div className="px-4 md:px-10 py-4 md:py-7 bg-gray-100 rounded-tl-lg rounded-tr-lg">
           <div className="sm:flex items-center justify-between">
@@ -40,8 +59,9 @@ function MyProject() {
           </div>
         </div>
       </div>
+      <br />
     </>
-  );
+  )
 }
 
-export default MyProject;
+export default History

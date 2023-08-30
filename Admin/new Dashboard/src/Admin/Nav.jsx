@@ -1,9 +1,4 @@
-
-
-
-
 export const Nav = () => {
- 
   return (
     <nav className="bg-[#396c84] border-b border-gray-200 px-4 py-3 fixed left-0 right-0 top-0 z-50 shadow-md">
       <div className="flex flex-wrap  justify-between items-center">
@@ -12,7 +7,7 @@ export const Nav = () => {
             data-drawer-target="drawer-navigation"
             data-drawer-toggle="drawer-navigation"
             aria-controls="drawer-navigation"
-            className="p-2 mr-2 text-teal-600 rounded-lg cursor-pointer md:hidden hover:text-white hover:bg-teal-600 focus:bg-teal-600 focus:text-white focus:ring-2 focus:ring-white"
+            className="p-2 mr-2 text-white rounded-lg cursor-pointer md:hidden hover:text-black hover:bg-teal-600 focus:bg-teal-600 focus:text-white focus:ring-2 focus:ring-white"
           >
             <svg
               aria-hidden="true"
@@ -56,11 +51,7 @@ export const Nav = () => {
         Sign out
       </Dropdown.Item>
     </Dropdown> */}
-          <a
-            href="#logo"
-            className="flex items-center justify-between mr-4"
-          >
-           
+          <a href="#logo" className="flex items-center justify-between mr-4">
             <span className="flex items-center  justify-center  w-24 h-10  text-2xl font-semibold whitespace-nowrap text-white">
               PLU
             </span>

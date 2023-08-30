@@ -10,11 +10,6 @@ const ChatComponent1 = () => {
   const [chatMessages, setChatMessages] = useState([]);
   const [refresh, setRefresh] = useState(true);
   const [messageSpecialist, setMessageSpecialist] = useState([])
-  // if(selectedProject){
-  //   console.log(selectedProject.owner);
-  //   console.log(user._id);
-  // }
-
   // Fetch projects from the server
   useEffect(() => {
     axios

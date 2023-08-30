@@ -9,22 +9,21 @@ import {  toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export const TableOfBooks = ({ refresh, setRefresh }) => {
-  const notifySuccess = (msg) => toast.success(msg);
-  const notifyError = (msg) => toast.error(msg);
+  // const notifySuccess = (msg) => toast.success(msg);
+  // const notifyError = (msg) => toast.error(msg);
   const [books, setBooks] = useState([]);
-  console.log(books);
-  const [bookUpdate, setBookUpdate] = useState({
-    _id: "",
-    name: "",
-    description: "",
-    price: "",
-    category: "",
-    ratings: "",
-    quantity: "",
-    pages: "",
-    author: "",
-    img: "",
-  });
+  // const [bookUpdate, setBookUpdate] = useState({
+  //   _id: "",
+  //   name: "",
+  //   description: "",
+  //   price: "",
+  //   category: "",
+  //   ratings: "",
+  //   quantity: "",
+  //   pages: "",
+  //   author: "",
+  //   img: "",
+  // });
   
 
   // get all donors
@@ -39,55 +38,55 @@ export const TableOfBooks = ({ refresh, setRefresh }) => {
       });
   }, [refresh]);
 
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setBookUpdate((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
+  // const handleChange = (event) => {
+  //   const { name, value } = event.target;
+  //   setBookUpdate((prev) => ({
+  //     ...prev,
+  //     [name]: value,
+  //   }));
+  // };
 
-  const handleDelete = (id) => {
-    Swal.fire({
-      title: `Are yoy sure to delete this book ?`,
-      showConfirmButton: true,
-      showCancelButton: true,
-      confirmButtonText: "Yes",
-      cancelButtonText: "No",
-      icon: "warning",
-    }).then((result) => {
-      /* Read more about isConfirmed, isDenied below */
-      if (result.isConfirmed) {
-        Swal.fire(` Book was Deleted Successfully`, "", "success");
+  // const handleDelete = (id) => {
+  //   Swal.fire({
+  //     title: `Are you sure to delete this book ?`,
+  //     showConfirmButton: true,
+  //     showCancelButton: true,
+  //     confirmButtonText: "Yes",
+  //     cancelButtonText: "No",
+  //     icon: "warning",
+  //   }).then((result) => {
+  //     /* Read more about isConfirmed, isDenied below */
+  //     if (result.isConfirmed) {
+  //       Swal.fire(` Book was Deleted Successfully`, "", "success");
 
-        axios
-          .patch("http://localhost:8800/deleteproduct/" + id)
-          .then((response) => {
-            console.log(response.data);
-            setRefresh(!refresh);
-          })
+  //       axios
+  //         .patch("http://localhost:8800/deleteproduct/" + id)
+  //         .then((response) => {
+  //           console.log(response.data);
+  //           setRefresh(!refresh);
+  //         })
 
-          .catch((error) => console.log(error.message));
-      } else Swal.fire("Cancel", "", "error");
-    });
-  };
-  const handleSubmitUpdate = async (event) => {
-    try {
-      event.preventDefault();
+  //         .catch((error) => console.log(error.message));
+  //     } else Swal.fire("Cancel", "", "error");
+  //   });
+  // };
+  // const handleSubmitUpdate = async (event) => {
+  //   try {
+  //     event.preventDefault();
 
-      const data = await axios.patch(
-        `http://localhost:8800/updateproduct/${bookUpdate._id}`,
-        bookUpdate
-      );
-      notifySuccess("book updated success");
-      setRefresh(!refresh);
+  //     const data = await axios.patch(
+  //       `http://localhost:8800/updateproduct/${bookUpdate._id}`,
+  //       bookUpdate
+  //     );
+  //     notifySuccess("book updated success");
+  //     setRefresh(!refresh);
 
-      console.log("added success", data.data);
-    } catch (err) {
-      console.log(err);
-      notifyError(err.message);
-    }
-  };
+  //     console.log("added success", data.data);
+  //   } catch (err) {
+  //     console.log(err);
+  //     notifyError(err.message);
+  //   }
+  // };
   const tableRows = books.map((book) => {
     return (
       <tr key={book._id} className="border-b ">
@@ -97,20 +96,20 @@ export const TableOfBooks = ({ refresh, setRefresh }) => {
         >
           {book.name}
         </th>
-        <td className="px-4 py-3">{book.owner.name}</td>
+        <td className="px-4 py-3">{book.owner?.name}</td>
         <td className="px-4 py-3">{book.payment.price}</td>
         <td className="px-4 py-3">{book.payment.isPaid == true ? 'true': 'false'}</td>
         <td className="px-4 py-3">{book.specialists.length}</td>
         <td className="px-4 py-3">{book.price}</td>
         <td className="px-4 py-3">{book.description}</td>
-        <td className="px-4 py-3">{book.quantity}</td>
+        {/* <td className="px-4 py-3">{book.quantity}</td> */}
 
-        <td className="px-4 py-3 flex items-center justify-start gap-2 flex-row-reverse">
+        {/* <td className="px-4 py-3 flex items-center justify-start gap-2 flex-row-reverse">
           <div
             id=""
             className="bg-white  rounded divide-y divide-gray-100 shadow "
-          >
-            <div className="tooltip tooltip-info text-white" data-tip="Edit">
+          > */}
+            {/* <div className="tooltip tooltip-info text-white" data-tip="Edit">
               <button
                 // onClick={() => handleUpdate(book._id)
                 // }
@@ -134,22 +133,22 @@ export const TableOfBooks = ({ refresh, setRefresh }) => {
               >
                 <BiSolidMessageSquareEdit className="text-neutral text-[18px]" />
               </button>
-            </div>
-          </div>
+            </div> */}
+          {/* </div>
           <div
             id=""
             className="bg-white  rounded divide-y divide-gray-100 shadow "
-          >
-            <div className="tooltip tooltip-error text-white" data-tip="Delete">
+          > */}
+            {/* <div className="tooltip tooltip-error text-white" data-tip="Delete">
               <button
                 onClick={() => handleDelete(book._id)}
                 className="btn bg-white hover:bg-red-200 shadow-lg hover:shadow-xl border-none "
               >
                 <AiOutlineDelete className="text-red-500 text-[18px]" />
               </button>
-            </div>
-          </div>
-        </td>
+            </div> */}
+          {/* </div>
+        </td> */}
       </tr>
     );
   });
@@ -185,13 +184,13 @@ export const TableOfBooks = ({ refresh, setRefresh }) => {
                   <th scope="col" className="px-4 py-3">
                     Description
                   </th>
-                  <th scope="col" className="px-4 py-3">
+                  {/* <th scope="col" className="px-4 py-3">
                     Quantity
-                  </th>
+                  </th> */}
 
-                  <th scope="col" className="px-4 py-3">
+                  {/* <th scope="col" className="px-4 py-3">
                     <span className="sr-only">Actions</span>
-                  </th>
+                  </th> */}
                 </tr>
               </thead>
               <tbody>
@@ -206,14 +205,14 @@ export const TableOfBooks = ({ refresh, setRefresh }) => {
         </div>
       </div>
 
-      <dialog id="my_modal_1" className="modal">
+      {/* <dialog id="my_modal_1" className="modal">
         <form
           onSubmit={handleSubmitUpdate}
           method="dialog"
           className="modal-box"
         >
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {/*  */}
+            
             <div className="form-control w-full max-w-xs">
               <label className="label">
                 <span className="label-text">Book Title</span>
@@ -227,7 +226,7 @@ export const TableOfBooks = ({ refresh, setRefresh }) => {
                 onChange={handleChange}
               />
             </div>
-            {/*  */}
+
             <div className="form-control w-full max-w-xs">
               <label className="label">
                 <span className="label-text">Category</span>
@@ -241,7 +240,7 @@ export const TableOfBooks = ({ refresh, setRefresh }) => {
                 onChange={handleChange}
               />
             </div>
-            {/*  */}
+            
             <div className="form-control w-full max-w-xs">
               <label className="label">
                 <span className="label-text">author</span>
@@ -255,7 +254,7 @@ export const TableOfBooks = ({ refresh, setRefresh }) => {
                 onChange={handleChange}
               />
             </div>
-            {/*  */}
+            
             <div className="form-control w-full max-w-xs">
               <label className="label">
                 <span className="label-text">Description</span>
@@ -269,7 +268,7 @@ export const TableOfBooks = ({ refresh, setRefresh }) => {
                 onChange={handleChange}
               />
             </div>
-            {/*  */}
+            
             <div className="form-control w-full max-w-xs">
               <label className="label">
                 <span className="label-text">Price</span>
@@ -284,7 +283,7 @@ export const TableOfBooks = ({ refresh, setRefresh }) => {
                 onChange={handleChange}
               />
             </div>
-            {/*  */}
+            
             <div className="form-control w-full max-w-xs">
               <label className="label">
                 <span className="label-text">Quantity</span>
@@ -299,7 +298,7 @@ export const TableOfBooks = ({ refresh, setRefresh }) => {
                 onChange={handleChange}
               />
             </div>
-            {/*  */}
+            
             <div className="form-control w-full max-w-xs">
               <label className="label">
                 <span className="label-text">Rating</span>
@@ -315,7 +314,7 @@ export const TableOfBooks = ({ refresh, setRefresh }) => {
                 onChange={handleChange}
               />
             </div>
-            {/*  */}
+            
             <div className="form-control w-full max-w-xs">
               <label className="label">
                 <span className="label-text">Pages</span>
@@ -330,7 +329,7 @@ export const TableOfBooks = ({ refresh, setRefresh }) => {
                 onChange={handleChange}
               />
             </div>
-            {/*  */}
+            
 
             <div className="form-control w-full max-w-xs">
               <label className="label">
@@ -345,9 +344,6 @@ export const TableOfBooks = ({ refresh, setRefresh }) => {
                 className="input input-sm  border-[#529b03] w-full max-w-xs"
               />
             </div>
-            {/*  */}
-
-            {/*  */}
             <div className="form-control w-full max-w-xs col-start-3">
               <label className="label invisible">
                 <span className="label-text">button</span>
@@ -357,9 +353,9 @@ export const TableOfBooks = ({ refresh, setRefresh }) => {
               </button>
             </div>
           </div>
-          {/* <div className="btn " onClick={ handleKeyPress }>x</div> */}
+
         </form>
-      </dialog>
+      </dialog> */}
     </section>
   );
 };

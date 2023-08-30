@@ -48,8 +48,32 @@ const showQuotes = async(req , res)=>{
     }
 }
 
+const deleteUser = async(req , res)=>{
+  const {id} = req.params
+    try{
+       const user = await User.findByIdAndUpdate(id, {blocked: true})
+       res.json(" user deleted successfully ");
+    }catch(error){
+
+        res.status(500).json({ error: "cannot delete user" });
+    }
+}
+
+const returnUser = async(req , res)=>{
+  const {id} = req.params
+    try{
+       const user = await User.findByIdAndUpdate(id, {blocked: false})
+       res.json(" user returned successfully ");
+    }catch(error){
+
+        res.status(500).json({ error: "cannot return user" });
+    }
+}
+
 module.exports = {
   addQuote,
   updateQuote,
   showQuotes,
+  deleteUser,
+  returnUser
 };

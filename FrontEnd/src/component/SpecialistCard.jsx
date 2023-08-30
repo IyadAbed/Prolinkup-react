@@ -10,15 +10,26 @@ import {
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-function SpecialistCard({ major, name, imageUrl, skills, projectId, userId, isPaid }) {
+function SpecialistCard({
+  major,
+  name,
+  imageUrl,
+  skills,
+  projectId,
+  userId,
+  isPaid,
+  setReGet,
+  reGet,
+  report,
+}) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(!open);
   const [requestInfo, SetRequestInfo] = useState({
     message: "",
     projectId,
-    price: Number
+    price: Number,
   });
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const handleChange = (e) => {
     const { name, value } = e.target;
     SetRequestInfo((prev) => ({
@@ -27,30 +38,30 @@ function SpecialistCard({ major, name, imageUrl, skills, projectId, userId, isPa
     }));
   };
 
-  const handleOpenIspaid = () =>{
+  const handleOpenIspaid = () => {
     if (isPaid) {
-      return handleOpen()
+      return handleOpen();
     } else {
-      navigate(`/checkOut/${projectId}`)
+      navigate(`/checkOut/${projectId}`);
     }
-  }
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    axios.get(`http://localhost:5000/projectss/${projectId}`)
-    .then(async (res)=>{
+    axios
+      .get(`http://localhost:5000/projectss/${projectId}`)
+      .then(async (res) => {
         try {
-          await axios.put(
-            `http://localhost:5000/sendReq/${userId}`,
-            requestInfo
-          )
-          .then((res)=>{
-            console.log(res.data);
-          })
+          await axios
+            .put(`http://localhost:5000/sendReq/${userId}`, requestInfo)
+            .then((res) => {
+              console.log(res.data);
+              setReGet(!reGet);
+            });
         } catch (error) {
           console.log(error);
         }
-    })
+      });
   };
 
   return (
@@ -121,7 +132,7 @@ function SpecialistCard({ major, name, imageUrl, skills, projectId, userId, isPa
                 >
                   <span>Send Request</span>
                 </Button>
-
+                {report}
                 <Dialog open={open} handler={handleOpen}>
                   <DialogHeader style={{ marginBottom: "-120px" }}>
                     Account Settings{" "}
@@ -149,9 +160,7 @@ function SpecialistCard({ major, name, imageUrl, skills, projectId, userId, isPa
                               ></textarea>
                             </div>
                             <div>
-                              <label
-                                className="text-black dark:text-gray-200"
-                              >
+                              <label className="text-black dark:text-gray-200">
                                 Enter a price
                               </label>
                               <input

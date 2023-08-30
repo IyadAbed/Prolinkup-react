@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useContext, useState } from 'react'
 import {
   Button,
   Dialog,
@@ -8,8 +8,11 @@ import {
 } from "@material-tailwind/react";
 import { BiEdit } from 'react-icons/bi';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+import { UserContext } from '../Context/UserContext';
 
 function Projects({image,name, id}) {
+  const {userRefresh} = useContext(UserContext)
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(!open);
   const [show, setShow] = useState(false);
@@ -24,6 +27,18 @@ function Projects({image,name, id}) {
       [name]: value,
     }));
   };
+
+  async function handleEnd () {
+    try {
+      const res = await axios.patch(`http://localhost:5000/projects/${id}/end`)
+          userRefresh();
+          console.log(res);
+
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <>
             <tbody className="w-full">
@@ -238,8 +253,8 @@ function Projects({image,name, id}) {
                     </DialogBody>
                   </Dialog>
                 </Fragment>
-                      <div className="text-xs w-full hover:bg-indigo-700 py-4 px-4 cursor-pointer hover:text-white">
-                        <p>Delete</p>
+                      <div role='button' onClick={handleEnd} className="text-xs w-full hover:bg-indigo-700 py-4 px-4 cursor-pointer hover:text-white">
+                        <p>Finished</p>
                       </div>
                     </div>
                   )}

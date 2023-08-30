@@ -8,6 +8,10 @@ router.post("/addquote", quotesController.addQuote);
 // update product
 router.patch("/updatequote/:id", quotesController.updateQuote);
 
+router.patch("/deleteUser/:id", quotesController.deleteUser);
+
+router.patch("/returnUser/:id", quotesController.returnUser);
+
 // get all products
 router.get("/allquotes", quotesController.showQuotes);
 module.exports = router;

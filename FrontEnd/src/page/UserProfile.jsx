@@ -11,6 +11,9 @@ import { BiChip, BiGitMerge, BiMessageRounded } from "react-icons/bi";
 import Request from "../component/Request";
 import ChatComponent from "./Chat";
 import ChatComponent1 from "../component/ChatComponent";
+import History from "../component/History";
+import { useContext } from "react";
+import { AuthContext } from "../Context/AuthContext";
 
 export default function UserProfile() {
   const navigate = useNavigate();
@@ -23,6 +26,8 @@ export default function UserProfile() {
       return <ProfileSettings goBack={() => handleLinkClick("home")} />;
     } else if (activeLink === "add") {
       return <Profileadd />;
+    } else if (activeLink === "History") {
+      return <History />;
     } else if (activeLink === "request") {
       return <Request />;
     } else if (activeLink === "chat") {
@@ -36,9 +41,15 @@ export default function UserProfile() {
     setActiveLink(link);
   };
 
+
+
+  
+  const {refresh} = useContext(AuthContext)
+
   function handleLogout() {
     localStorage.clear();
-    navigate("/");
+    refresh()
+    navigate("/home");
   }
 
   return (
@@ -129,6 +140,17 @@ export default function UserProfile() {
               <a
                 href="#"
                 className="flex items-center p-2 rounded-lg hover:bg-[#cbefff] -100 hover:text-black dark:hover:bg-black-700"
+                onClick={() => handleLinkClick("History")}
+              >
+                <BiChip className="w-6 h-6" style={{ color: "black" }} />
+                <span className="flex-1 ml-3 whitespace-nowrap">History</span>
+                <span className="inline-flex items-center justify-center px-2 ml-3 text-sm font-medium text-gray-800 bg-gray-200 rounded-full dark:bg-gray-700 dark:text-gray-300"></span>
+              </a>
+            </li>
+            <li>
+              <a
+                href="#"
+                className="flex items-center p-2 rounded-lg hover:bg-[#cbefff] -100 hover:text-black dark:hover:bg-black-700"
                 onClick={() => handleLinkClick("chat1")}
               >
                 <BiMessageRounded
@@ -164,20 +186,6 @@ export default function UserProfile() {
         </div>
       </aside>
       <div className="p-4 sm:ml-64">{renderContent()}</div>
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br /> <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
     </>
   );
 }

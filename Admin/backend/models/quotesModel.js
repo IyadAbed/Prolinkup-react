@@ -20,15 +20,15 @@ const userSchema = new mongoose.Schema(
     },
     major: {
       type: [String],
-      required: true,
+      // required: true,
     },
     skills: {
       type: [String],
-      required: true,
+      // required: true,
     },
     experience: {
       type: Number,
-      required: true,
+      // required: true,
     },
     availability: {
       type: Boolean,
@@ -74,6 +74,19 @@ const userSchema = new mongoose.Schema(
     },
     endPrice:{
       type: Number
+    },
+    report:[{
+      reporter:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+      reason:{
+        type: String
+      }
+    }],
+    blocked:{
+      type: Boolean,
+      default: false
     },
     createdAt: {
       type: Date,

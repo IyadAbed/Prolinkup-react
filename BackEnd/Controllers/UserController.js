@@ -11,7 +11,7 @@ function generateToken({ firstName, email }) {
 }
 
 function generateTokenLogin({ email }) {
-  const user = {firstName, email };
+  const user = { email };
   const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET);
   return token;
 }
@@ -60,7 +60,7 @@ module.exports = {
         return res.json({ error: "Invallid password" });
       }
       const token = generateTokenLogin({
-        email,
+        email
       });
       res.json({ message: "Success Login user", Tok: token, pass: checkPass });
     } catch (error) {
@@ -160,17 +160,21 @@ resetpassword : (req, res) => {
   updateUser: async (req, res) => {
     try {
       const { id } = req.params;
-      const name = req.body.name;
-      const imagePath = req.file.path;
+      const {name, skills} = req.body;
+      const imagePath = req.file?.path;
       const imageUrl = `http://localhost:5000/${imagePath}`;
       const user = await User.findById(id);
-
       if (!user) {
         console.log("User not found");
         return;
       }
-      user.imageUrl = imageUrl || user.imageUrl;
+      if(imagePath){
+        user.imageUrl = imageUrl || user.imageUrl;
+      }
       user.name = name || user.name;
+      if(skills){
+        user.skills = skills
+      }
       const updatedUser = await user.save();
       res.json(updatedUser);
     } catch (error) {

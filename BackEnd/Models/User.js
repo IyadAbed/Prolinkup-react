@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const bcrypt = require("bcrypt");
 
 const userSchema = new mongoose.Schema(
   {
@@ -85,6 +84,10 @@ const userSchema = new mongoose.Schema(
         type: String
       }
     }],
+    blocked:{
+      type: Boolean,
+      default: false
+    },
     createdAt: {
       type: Date,
       default: Date.now,

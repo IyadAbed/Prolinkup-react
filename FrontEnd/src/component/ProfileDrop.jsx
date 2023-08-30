@@ -10,7 +10,7 @@ function ProfileDrop() {
   const handleLogOut = () => {
     localStorage.clear();
     setAuth(false);
-    navigate("/");
+    navigate("/home");
   };
   return (
     <div className="hs-dropdown relative inline-flex">
@@ -22,7 +22,7 @@ function ProfileDrop() {
       {user.imageUrl ? <img
         className="w-8 h-8 rounded-full"
         src={`${user.imageUrl}`}
-        alt="Maria"
+        alt="https://t3.ftcdn.net/jpg/03/46/83/96/360_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg"
       /> : <img className='w-8 h-8 rounded-full'
         src='https://t3.ftcdn.net/jpg/03/46/83/96/360_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg'
         alt='image'/>

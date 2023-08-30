@@ -11,6 +11,8 @@ router.get('/projectTodo/:userId', projectController.getAllProjectTodo);
 // Route for fetching a project by ID
 router.get("/projects/:owner", projectController.getProjectById);
 
+router.get("/projectsFinished/:owner", projectController.projectsFinished);
+
 router.get("/projectss/:id", projectController.getProjectByIdOfProject);
 
 router.get("/status/:userId", projectController.getUserStatus);
@@ -26,5 +28,9 @@ router.put('/acceptRequest', projectController.acceptRequest);
 
 // Route for canceling a specialist in a project
 router.put('/cancelRequest', projectController.cancelRequest);
+
+router.patch('/projects/:id/start', projectController.startProject );
+
+router.patch('/projects/:id/end', projectController.endProject);
 
 module.exports = router;

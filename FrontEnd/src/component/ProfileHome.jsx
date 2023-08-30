@@ -10,15 +10,23 @@ import {
   DialogFooter,
 } from "@material-tailwind/react";
 import { UserContext } from "../Context/UserContext";
+import Select from "react-select";
+import skillsData from "./skillsData";
 
 export default function Profilehome() {
   const { user, userRefresh } = useContext(UserContext);
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(!open);
   const [file, setFile] = useState(null);
+  const [skills, setSkills] = useState([]);
   const [newUser, setNewUser] = useState({
     name: "",
+    skills: []
   });
+  const options = skillsData.map(skill => ({
+    value: skill.value,
+    label: skill.label
+  }));
   const handleChange = (e) => {
     const { name, value } = e.target;
     setNewUser((prev) => ({
@@ -26,23 +34,33 @@ export default function Profilehome() {
       [name]: value,
     }));
   };
+  useEffect(() => {
+    // Extract selected skill values
+    const newSkills = skills.map((item) => item.value);
+    setNewUser((prev) => ({
+      ...prev,
+      skills: newSkills,
+    }));
+  }, [skills]);
   // Extract the relevant data from the decoded token
   function handleSubmit(event) {
     event.preventDefault();
     const formData = new FormData();
     formData.append("image", file);
     formData.append("name", newUser.name);
+    newUser.skills.forEach((skill) => {
+      formData.append("skills[]", skill); // Append each skill as a separate field
+    })
     try {
       axios
         .put(`http://localhost:5000/updateUser/${user._id}`, formData)
         .then(() => {
-          userRefresh()
+          userRefresh();
         });
     } catch (error) {
       console.log(error);
     }
   }
-
 
   return (
     <>
@@ -60,15 +78,14 @@ export default function Profilehome() {
           <div className="bg-white shadow-xl rounded-lg p-6">
             <div className="photo-wrapper">
               {user.imageUrl ? (
-              <img
-                className="w-48 h-48 rounded-full mx-auto text-gray-500"
-                src={`${user.imageUrl}`}
-                alt="Profile Image"
-              />
-              ):(
-              <FaUser className="w-32 h-32 rounded-full mx-auto text-gray-500" /> 
-              )
-            }
+                <img
+                  className="w-48 h-48 rounded-full mx-auto text-gray-500"
+                  src={`${user.imageUrl}`}
+                  alt="Profile Image"
+                />
+              ) : (
+                <FaUser className="w-32 h-32 rounded-full mx-auto text-gray-500" />
+              )}
             </div>
 
             <div className="p-6">
@@ -84,7 +101,9 @@ export default function Profilehome() {
                     <tbody>
                       <tr>
                         <td className="px-2 py-2">
-                          <span style={{ fontWeight: "bold" }}>Experience :</span>{" "}
+                          <span style={{ fontWeight: "bold" }}>
+                            Experience :
+                          </span>{" "}
                           {user.experience} Years
                         </td>
                       </tr>
@@ -102,9 +121,7 @@ export default function Profilehome() {
                     <tbody>
                       <tr>
                         <td className="px-2 py-2">
-                          <span style={{ fontWeight: "bold" }}>
-                            Major :
-                          </span>{" "}
+                          <span style={{ fontWeight: "bold" }}>Major :</span>{" "}
                           {user.major}
                         </td>
                       </tr>
@@ -112,11 +129,9 @@ export default function Profilehome() {
                         <td className="px-2 py-2">
                           <span style={{ fontWeight: "bold" }}>Skills :</span>{" "}
                           <ul>
-                          {user.skills?.map((skills)=>{
-                            return (
-                                  <li>{skills}</li>
-                                  )
-                                })}
+                            {user.skills?.map((skills) => {
+                              return <li>{skills}</li>;
+                            })}
                           </ul>
                         </td>
                       </tr>
@@ -173,19 +188,25 @@ export default function Profilehome() {
                                 >
                                   Add Skill's
                                 </label>
-                                <input
-                                type="text"
-                                  className="block w-full px-4 py-2 mt-2 text-black bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
+                                <Select
+                                  onChange={(e) => {
+                                    setSkills(e);
+                                  }}
+                                  defaultValue={[options[20]]}
+                                  isMulti
+                                  name="skills"
+                                  options={options}
+                                  className="basic-multi-select"
+                                  classNamePrefix="select"
                                 />
                               </div>
-
 
                               <input
                                 className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
                                 id="multiple_files"
                                 onChange={(e) => {
                                   setFile(e.target.files[0]);
-                                  }}
+                                }}
                                 type="file"
                                 multiple=""
                               />
